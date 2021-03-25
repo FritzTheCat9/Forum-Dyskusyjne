@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Forum_Dyskusyjne.Models
 {
-    public class Announcements
+    public class Announcement
     {
         public int Id { get; set; }
 

@@ -20,4 +20,3 @@ namespace Forum_Dyskusyjne.Models
         public ICollection<Attachment> Attachments { get; set; }
     }
 }
-s
