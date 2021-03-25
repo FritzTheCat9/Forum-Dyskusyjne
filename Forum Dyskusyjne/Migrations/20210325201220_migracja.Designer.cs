@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Forum_Dyskusyjne.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210325193826_migracja")]
+    [Migration("20210325201220_migracja")]
     partial class migracja
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -214,6 +214,26 @@ namespace Forum_Dyskusyjne.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ranks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            MessagesNumber = 0,
+                            Name = "New"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            MessagesNumber = 10,
+                            Name = "Begginer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            MessagesNumber = 50,
+                            Name = "More experienced"
+                        });
                 });
 
             modelBuilder.Entity("Forum_Dyskusyjne.Models.Thread", b =>

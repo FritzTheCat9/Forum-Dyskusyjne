@@ -31,9 +31,11 @@ namespace Forum_Dyskusyjne.Data
 
             // Dodanie danych do bazy danych
 
-            /*builder.Entity<Announcement>().HasData(
-                new Announcement { Id = 1, Author = new User(), Title = "Ogłoszenie 1", Text = "Witajcie na forum dyskusyjnym!" }
-            );*/
+            builder.Entity<Rank>().HasData(
+                new Rank { Id = 1, Name = "New", MessagesNumber = 0 },
+                new Rank { Id = 2, Name = "Begginer", MessagesNumber = 10 },
+                new Rank { Id = 3, Name = "More experienced", MessagesNumber = 50 }
+            );
         }
     }
 }
