@@ -29,6 +29,8 @@ namespace Forum_Dyskusyjne.Data
         {
             base.OnModelCreating(builder);
 
+            // Dodanie danych do bazy danych
+
             /*builder.Entity<Announcement>().HasData(
                 new Announcement { Id = 1, Author = new User(), Title = "Ogłoszenie 1", Text = "Witajcie na forum dyskusyjnym!" }
             );*/
