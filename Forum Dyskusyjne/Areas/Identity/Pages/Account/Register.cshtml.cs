@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.IO;
+using Forum_Dyskusyjne.Data;
 
 namespace Forum_Dyskusyjne.Areas.Identity.Pages.Account
 {
@@ -24,17 +26,20 @@ namespace Forum_Dyskusyjne.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _dbContext;
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
@@ -75,7 +80,13 @@ namespace Forum_Dyskusyjne.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email };
+                // Dodane pola do klasy User
+                var avatarPath = Directory.GetCurrentDirectory() + @"\Resources\Avatars\DefaultAvatar.png";
+                var messagePaging = 10;
+                var messageNumber = 0;
+                var rank = _dbContext.Ranks.Where(x => x.Id == 1).FirstOrDefault();
+
+                var user = new User { UserName = Input.Email, Email = Input.Email, AvatarPath = avatarPath, MessagePaging = messagePaging, MessageNumber = messageNumber, Rank = rank };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

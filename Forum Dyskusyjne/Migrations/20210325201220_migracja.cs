@@ -389,6 +389,21 @@ namespace Forum_Dyskusyjne.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Ranks",
+                columns: new[] { "Id", "MessagesNumber", "Name" },
+                values: new object[] { 1, 0, "New" });
+
+            migrationBuilder.InsertData(
+                table: "Ranks",
+                columns: new[] { "Id", "MessagesNumber", "Name" },
+                values: new object[] { 2, 10, "Begginer" });
+
+            migrationBuilder.InsertData(
+                table: "Ranks",
+                columns: new[] { "Id", "MessagesNumber", "Name" },
+                values: new object[] { 3, 50, "More experienced" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Announcements_AuthorId",
                 table: "Announcements",
