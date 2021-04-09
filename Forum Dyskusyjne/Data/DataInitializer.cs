@@ -91,7 +91,7 @@ namespace Forum_Dyskusyjne.Data
                 new Announcement { Author = user1, Title = "Ogłoszenie 4", Text = "Zawartość ogłoszenia" },
                 new Announcement { Author = user1, Title = "Ogłoszenie 5", Text = "Zawartość ogłoszenia" }
             };
-            foreach (var announcement in announcements.Reverse())
+            foreach (var announcement in announcements)
             {
                 context.Announcements.Add(announcement);
             }
