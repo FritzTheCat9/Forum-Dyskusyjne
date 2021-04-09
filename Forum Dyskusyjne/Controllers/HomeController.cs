@@ -1,5 +1,7 @@
-﻿using Forum_Dyskusyjne.Models;
+﻿using Forum_Dyskusyjne.Data;
+using Forum_Dyskusyjne.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,14 +14,19 @@ namespace Forum_Dyskusyjne.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
+            var t = _context.Forums.Include(x => x.Category).Include(x => x.Threads).Include(x => x.Moderators).Where(x => x.Id == 1).First();
+
+
             return View();
         }
 
