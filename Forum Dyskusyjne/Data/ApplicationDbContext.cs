@@ -9,6 +9,10 @@ namespace Forum_Dyskusyjne.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public ApplicationDbContext()
+        {
+        }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -16,7 +20,7 @@ namespace Forum_Dyskusyjne.Data
 
         public new DbSet<User> Users { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
-        public DbSet<ForbiddenWords> ForbiddenWords{ get; set; }
+        public DbSet<ForbiddenWord> ForbiddenWords{ get; set; }
         public DbSet<Rank> Ranks { get; set; }
         public DbSet<PrivateMessage> PrivateMessages { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
@@ -36,6 +40,8 @@ namespace Forum_Dyskusyjne.Data
                 new Rank { Id = 2, Name = "Begginer", MessagesNumber = 10 },
                 new Rank { Id = 3, Name = "More experienced", MessagesNumber = 50 }
             );
+
+            // Reszta danych dodana jest w pliku DataInitializer
         }
     }
 }

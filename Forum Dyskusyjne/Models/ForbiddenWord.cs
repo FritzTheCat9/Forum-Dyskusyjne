@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Forum_Dyskusyjne.Models
 {
-    public class ForbiddenWords
+    public class ForbiddenWord
     {
         public int Id { get; set; }
 
