@@ -277,7 +277,7 @@ namespace Forum_Dyskusyjne.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    RecerverId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ReceiverId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -289,8 +289,8 @@ namespace Forum_Dyskusyjne.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PrivateMessages_AspNetUsers_RecerverId",
-                        column: x => x.RecerverId,
+                        name: "FK_PrivateMessages_AspNetUsers_ReceiverId",
+                        column: x => x.ReceiverId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -494,9 +494,9 @@ namespace Forum_Dyskusyjne.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PrivateMessages_RecerverId",
+                name: "IX_PrivateMessages_ReceiverId",
                 table: "PrivateMessages",
-                column: "RecerverId");
+                column: "ReceiverId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Threads_AuthorId",

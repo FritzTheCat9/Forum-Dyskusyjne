@@ -178,7 +178,7 @@ namespace Forum_Dyskusyjne.Migrations
                     b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("RecerverId")
+                    b.Property<string>("ReceiverId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Text")
@@ -191,7 +191,7 @@ namespace Forum_Dyskusyjne.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("RecerverId");
+                    b.HasIndex("ReceiverId");
 
                     b.ToTable("PrivateMessages");
                 });
@@ -564,13 +564,13 @@ namespace Forum_Dyskusyjne.Migrations
                         .WithMany()
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("Forum_Dyskusyjne.Models.User", "Recerver")
+                    b.HasOne("Forum_Dyskusyjne.Models.User", "Receiver")
                         .WithMany()
-                        .HasForeignKey("RecerverId");
+                        .HasForeignKey("ReceiverId");
 
                     b.Navigation("Author");
 
-                    b.Navigation("Recerver");
+                    b.Navigation("Receiver");
                 });
 
             modelBuilder.Entity("Forum_Dyskusyjne.Models.Thread", b =>

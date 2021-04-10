@@ -17,9 +17,9 @@ namespace Forum_Dyskusyjne.Models
 
         public User Author { get; set; }
 
-        public string RecerverId { get; set; }
+        public string ReceiverId { get; set; }
 
-        public User Recerver { get; set; }
+        public User Receiver { get; set; }
 
         public ICollection<Attachment> Attachments { get; set; }
     }
