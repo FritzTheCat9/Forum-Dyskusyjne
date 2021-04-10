@@ -19,6 +19,8 @@ namespace Forum_Dyskusyjne.Models
 
         public Thread Thread { get; set; }
 
+        public string AuthorId { get; set; }
+
         public User Author { get; set; }
 
         public ICollection<Attachment> Attachments { get; set; }
