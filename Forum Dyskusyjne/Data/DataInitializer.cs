@@ -10,7 +10,7 @@ namespace Forum_Dyskusyjne.Data
 {
     public static class DataInitializer
     {
-        public static void SeedData (ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public static void SeedData(ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             SeedRoles(roleManager);
             SeedUsers(context, userManager);
@@ -34,7 +34,7 @@ namespace Forum_Dyskusyjne.Data
             }
         }
 
-        public static void SeedUsers (ApplicationDbContext context, UserManager<User> userManager)
+        public static void SeedUsers(ApplicationDbContext context, UserManager<User> userManager)
         {
             if (userManager.FindByEmailAsync("bartlomiejuminski1999@gmail.com").Result == null)
             {
@@ -117,7 +117,7 @@ namespace Forum_Dyskusyjne.Data
             if (context.PrivateMessages.Any()) { return; }
             var privateMessages = new PrivateMessage[]
             {
-                new PrivateMessage { Author = user1, Recerver = user2, Title = "Prwywatna wiadomość 1", Text = "Zawartość prywatnej wiadomości", 
+                new PrivateMessage { Author = user1, Recerver = user2, Title = "Prwywatna wiadomość 1", Text = "Zawartość prywatnej wiadomości",
                     Attachments = new List<Attachment>()
                     {
                         context.Attachments.Where(x => x.Id == 1).First(),
@@ -138,7 +138,7 @@ namespace Forum_Dyskusyjne.Data
             context.SaveChanges();
 
             /* Messages */
-            if (context.Messages.Any()) { return; }
+           /* if (context.Messages.Any()) { return; }
             var messages = new Message[]
             {
                 new Message { Author = user1, Text = "Zawartość wiadomości", Visible = true, Reported = false,
@@ -156,13 +156,13 @@ namespace Forum_Dyskusyjne.Data
             {
                 context.Messages.Add(message);
             }
-            context.SaveChanges();
+            context.SaveChanges();*/
 
             /* Threads */
-            if (context.Threads.Any()) { return; }
+            /*if (context.Threads.Any()) { return; }
             var threads = new Thread[]
             {
-                new Thread { Author = user1, Title = "Tytuł wątku", Text = "Zawartość wątku", Sticky = true, Views = 0,
+                new Thread { Author = user1, Title = "Tytuł wątku 3", Text = "Zawartość wątku", Sticky = true, Views = 0,
                     Attachments = new List<Attachment>()
                     {
                         context.Attachments.Where(x => x.Id == 5).First()
@@ -173,13 +173,13 @@ namespace Forum_Dyskusyjne.Data
                         context.Messages.Where(x => x.Id == 2).First()
                     }
                 },
-                new Thread { Author = user2, Title = "Tytuł wątku", Text = "Zawartość wątku", Sticky = false, Views = 0,
+                new Thread { Author = user2, Title = "Tytuł wątku 2", Text = "Zawartość wątku", Sticky = false, Views = 0,
                     Messages = new List<Message>()
                     {
                         context.Messages.Where(x => x.Id == 3).First()
                     }
                 },
-                new Thread { Author = user1, Title = "Tytuł wątku", Text = "Zawartość wątku", Sticky = false, Views = 0,
+                new Thread { Author = user1, Title = "Tytuł wątku 1", Text = "Zawartość wątku", Sticky = false, Views = 0,
                     Messages = new List<Message>()
                     {
                         context.Messages.Where(x => x.Id == 4).First(),
@@ -191,7 +191,7 @@ namespace Forum_Dyskusyjne.Data
             {
                 context.Threads.Add(thread);
             }
-            context.SaveChanges();
+            context.SaveChanges();*/
 
             /* ForbiddenWords */
             if (context.ForbiddenWords.Any()) { return; }
@@ -228,8 +228,34 @@ namespace Forum_Dyskusyjne.Data
                 new Forum { Name = "Minecraft", Category = context.Categories.Where(x => x.Id == 1).First(),
                     Threads = new List<Thread>()
                     {
-                        context.Threads.Where(x => x.Id == 1).First(),
-                        context.Threads.Where(x => x.Id == 2).First()
+                         new Thread { Author = user1, Title = "Tytuł wątku 3", Text = "Zawartość wątku",  Sticky = true, Views = 0,
+                             Attachments = new List<Attachment>()
+                             {
+                                 context.Attachments.Where(x => x.Id == 5).First()
+                             },
+                             Messages = new List<Message>()
+                             {
+                                 /*context.Messages.Where(x => x.Id == 1).First(),
+                                 context.Messages.Where(x => x.Id == 2).First()*/
+
+                                  new Message { Author = user1, Text = "Zawartość wiadomości", Visible = true, Reported = false,
+                                    Attachments = new List<Attachment>()
+                                    {
+                                        context.Attachments.Where(x => x.Id == 4).First()
+                                    }
+                                    },
+                                    new Message { Author = user2, Text = "Zawartość wiadomości", Visible = true, Reported = false },
+                
+                             }
+                         },
+                        new Thread { Author = user2, Title = "Tytuł wątku 2", Text = "Zawartość wątku", Sticky = false, Views = 0,
+                            Messages = new List<Message>()
+                            {
+                                //context.Messages.Where(x => x.Id == 3).First()
+                                new Message { Author = user1, Text = "Zawartość wiadomości" , Visible = true, Reported = false },
+               
+                            }
+                        }
                     },
                     Moderators = new List<User>()
                     {
@@ -240,7 +266,15 @@ namespace Forum_Dyskusyjne.Data
                 new Forum { Name = "Brickleberry", Category = context.Categories.Where(x => x.Id == 2).First(),
                     Threads = new List<Thread>()
                     {
-                        context.Threads.Where(x => x.Id == 3).First()
+                        new Thread { Author = user1, Title = "Tytuł wątku 1", Text = "Zawartość wątku", Sticky = false, Views = 0,
+                            Messages = new List<Message>()
+                            {
+                                /*context.Messages.Where(x => x.Id == 4).First(),
+                                context.Messages.Where(x => x.Id == 5).First()*/
+                                 new Message { Author = user2, Text = "Zawartość wiadomości", Visible = true, Reported = false },
+                                new Message { Author = user1, Text = "Zawartość wiadomości" , Visible = true, Reported = false }
+                            }
+                        }
                     },
                     Moderators = new List<User>()
                     {
@@ -250,6 +284,14 @@ namespace Forum_Dyskusyjne.Data
             };
             foreach (var forum in forums.Reverse())
             {
+                foreach (var thread in forum.Threads)
+                {
+                    thread.Forum = forum;
+                    foreach (var message in thread.Messages)
+                    {
+                        message.Thread = thread;
+                    }
+                }
                 context.Forums.Add(forum);
             }
             context.SaveChanges();
