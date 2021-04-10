@@ -22,7 +22,7 @@ namespace Forum_Dyskusyjne
         // GET: PrivateMessages
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.PrivateMessages.Include(p => p.Author).Include(p => p.Recerver);
+            var applicationDbContext = _context.PrivateMessages.Include(p => p.Author).Include(p => p.Receiver);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,7 +36,7 @@ namespace Forum_Dyskusyjne
 
             var privateMessage = await _context.PrivateMessages
                 .Include(p => p.Author)
-                .Include(p => p.Recerver)
+                .Include(p => p.Receiver)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (privateMessage == null)
             {
@@ -50,7 +50,7 @@ namespace Forum_Dyskusyjne
         public IActionResult Create()
         {
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
-            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "UserName");
+            ViewData["ReceiverId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
 
@@ -59,7 +59,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Text,AuthorId,RecerverId")] PrivateMessage privateMessage)
+        public async Task<IActionResult> Create([Bind("Id,Title,Text,AuthorId,ReceiverId")] PrivateMessage privateMessage)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace Forum_Dyskusyjne
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.AuthorId);
-            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.RecerverId);
+            ViewData["ReceiverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.ReceiverId);
             return View(privateMessage);
         }
 
@@ -86,7 +86,7 @@ namespace Forum_Dyskusyjne
                 return NotFound();
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.AuthorId);
-            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.RecerverId);
+            ViewData["ReceiverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.ReceiverId);
             return View(privateMessage);
         }
 
@@ -95,7 +95,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text,AuthorId,RecerverId")] PrivateMessage privateMessage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text,AuthorId,ReceiverId")] PrivateMessage privateMessage)
         {
             if (id != privateMessage.Id)
             {
@@ -123,7 +123,7 @@ namespace Forum_Dyskusyjne
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.AuthorId);
-            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.RecerverId);
+            ViewData["ReceiverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.ReceiverId);
             return View(privateMessage);
         }
 
@@ -137,7 +137,7 @@ namespace Forum_Dyskusyjne
 
             var privateMessage = await _context.PrivateMessages
                 .Include(p => p.Author)
-                .Include(p => p.Recerver)
+                .Include(p => p.Receiver)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (privateMessage == null)
             {
