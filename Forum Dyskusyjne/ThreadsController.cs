@@ -49,8 +49,8 @@ namespace Forum_Dyskusyjne
         // GET: Threads/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Id");
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
+            ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Name");
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace Forum_Dyskusyjne
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", thread.AuthorId);
-            ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Id", thread.ForumId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", thread.AuthorId);
+            ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Name", thread.ForumId);
             return View(thread);
         }
 
@@ -85,8 +85,8 @@ namespace Forum_Dyskusyjne
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", thread.AuthorId);
-            ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Id", thread.ForumId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", thread.AuthorId);
+            ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Name", thread.ForumId);
             return View(thread);
         }
 
@@ -122,8 +122,8 @@ namespace Forum_Dyskusyjne
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", thread.AuthorId);
-            ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Id", thread.ForumId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", thread.AuthorId);
+            ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Name", thread.ForumId);
             return View(thread);
         }
 

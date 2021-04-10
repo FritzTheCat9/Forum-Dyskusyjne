@@ -48,7 +48,7 @@ namespace Forum_Dyskusyjne
         // GET: Announcements/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace Forum_Dyskusyjne
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", announcement.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", announcement.AuthorId);
             return View(announcement);
         }
 
@@ -82,7 +82,7 @@ namespace Forum_Dyskusyjne
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", announcement.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", announcement.AuthorId);
             return View(announcement);
         }
 
@@ -118,7 +118,7 @@ namespace Forum_Dyskusyjne
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", announcement.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", announcement.AuthorId);
             return View(announcement);
         }
 

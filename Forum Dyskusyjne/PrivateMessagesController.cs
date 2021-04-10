@@ -49,8 +49,8 @@ namespace Forum_Dyskusyjne
         // GET: PrivateMessages/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
+            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace Forum_Dyskusyjne
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", privateMessage.AuthorId);
-            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "Id", privateMessage.RecerverId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.AuthorId);
+            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.RecerverId);
             return View(privateMessage);
         }
 
@@ -85,8 +85,8 @@ namespace Forum_Dyskusyjne
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", privateMessage.AuthorId);
-            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "Id", privateMessage.RecerverId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.AuthorId);
+            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.RecerverId);
             return View(privateMessage);
         }
 
@@ -122,8 +122,8 @@ namespace Forum_Dyskusyjne
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", privateMessage.AuthorId);
-            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "Id", privateMessage.RecerverId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.AuthorId);
+            ViewData["RecerverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.RecerverId);
             return View(privateMessage);
         }
 

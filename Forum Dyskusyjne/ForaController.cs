@@ -48,7 +48,7 @@ namespace Forum_Dyskusyjne
         // GET: Fora/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace Forum_Dyskusyjne
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", forum.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", forum.CategoryId);
             return View(forum);
         }
 
@@ -82,7 +82,7 @@ namespace Forum_Dyskusyjne
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", forum.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", forum.CategoryId);
             return View(forum);
         }
 
@@ -118,7 +118,7 @@ namespace Forum_Dyskusyjne
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", forum.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", forum.CategoryId);
             return View(forum);
         }
 
