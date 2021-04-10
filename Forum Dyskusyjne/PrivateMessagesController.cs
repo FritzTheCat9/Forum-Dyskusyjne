@@ -8,24 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
 
-namespace Forum_Dyskusyjne.Controllers
+namespace Forum_Dyskusyjne
 {
-    public class AnnouncementsController : Controller
+    public class PrivateMessagesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AnnouncementsController(ApplicationDbContext context)
+        public PrivateMessagesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Announcements
+        // GET: PrivateMessages
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Announcements.ToListAsync());
+            return View(await _context.PrivateMessages.ToListAsync());
         }
 
-        // GET: Announcements/Details/5
+        // GET: PrivateMessages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace Forum_Dyskusyjne.Controllers
                 return NotFound();
             }
 
-            var announcement = await _context.Announcements
+            var privateMessage = await _context.PrivateMessages
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (announcement == null)
+            if (privateMessage == null)
             {
                 return NotFound();
             }
 
-            return View(announcement);
+            return View(privateMessage);
         }
 
-        // GET: Announcements/Create
+        // GET: PrivateMessages/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Announcements/Create
+        // POST: PrivateMessages/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Text")] Announcement announcement)
+        public async Task<IActionResult> Create([Bind("Id,Title,Text")] PrivateMessage privateMessage)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(announcement);
+                _context.Add(privateMessage);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(announcement);
+            return View(privateMessage);
         }
 
-        // GET: Announcements/Edit/5
+        // GET: PrivateMessages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace Forum_Dyskusyjne.Controllers
                 return NotFound();
             }
 
-            var announcement = await _context.Announcements.FindAsync(id);
-            if (announcement == null)
+            var privateMessage = await _context.PrivateMessages.FindAsync(id);
+            if (privateMessage == null)
             {
                 return NotFound();
             }
-            return View(announcement);
+            return View(privateMessage);
         }
 
-        // POST: Announcements/Edit/5
+        // POST: PrivateMessages/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text")] Announcement announcement)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text")] PrivateMessage privateMessage)
         {
-            if (id != announcement.Id)
+            if (id != privateMessage.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace Forum_Dyskusyjne.Controllers
             {
                 try
                 {
-                    _context.Update(announcement);
+                    _context.Update(privateMessage);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AnnouncementExists(announcement.Id))
+                    if (!PrivateMessageExists(privateMessage.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace Forum_Dyskusyjne.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(announcement);
+            return View(privateMessage);
         }
 
-        // GET: Announcements/Delete/5
+        // GET: PrivateMessages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace Forum_Dyskusyjne.Controllers
                 return NotFound();
             }
 
-            var announcement = await _context.Announcements
+            var privateMessage = await _context.PrivateMessages
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (announcement == null)
+            if (privateMessage == null)
             {
                 return NotFound();
             }
 
-            return View(announcement);
+            return View(privateMessage);
         }
 
-        // POST: Announcements/Delete/5
+        // POST: PrivateMessages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var announcement = await _context.Announcements.FindAsync(id);
-            _context.Announcements.Remove(announcement);
+            var privateMessage = await _context.PrivateMessages.FindAsync(id);
+            _context.PrivateMessages.Remove(privateMessage);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AnnouncementExists(int id)
+        private bool PrivateMessageExists(int id)
         {
-            return _context.Announcements.Any(e => e.Id == id);
+            return _context.PrivateMessages.Any(e => e.Id == id);
         }
     }
 }

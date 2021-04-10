@@ -15,6 +15,10 @@ namespace Forum_Dyskusyjne.Models
 
         public string Text { get; set; }
 
+        public int ThreadId { get; set; }
+
+        public Thread Thread { get; set; }
+
         public User Author { get; set; }
 
         public ICollection<Attachment> Attachments { get; set; }

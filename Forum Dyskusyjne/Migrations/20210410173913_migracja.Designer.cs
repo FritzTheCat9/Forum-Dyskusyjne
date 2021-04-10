@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Forum_Dyskusyjne.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210409214616_migracja")]
+    [Migration("20210410173913_migracja")]
     partial class migracja
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,7 +126,7 @@ namespace Forum_Dyskusyjne.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -155,7 +155,7 @@ namespace Forum_Dyskusyjne.Migrations
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ThreadId")
+                    b.Property<int>("ThreadId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Visible")
@@ -246,7 +246,7 @@ namespace Forum_Dyskusyjne.Migrations
                     b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("ForumId")
+                    b.Property<int>("ForumId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Sticky")
@@ -536,7 +536,9 @@ namespace Forum_Dyskusyjne.Migrations
                 {
                     b.HasOne("Forum_Dyskusyjne.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
@@ -547,11 +549,15 @@ namespace Forum_Dyskusyjne.Migrations
                         .WithMany()
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("Forum_Dyskusyjne.Models.Thread", null)
+                    b.HasOne("Forum_Dyskusyjne.Models.Thread", "Thread")
                         .WithMany("Messages")
-                        .HasForeignKey("ThreadId");
+                        .HasForeignKey("ThreadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
+
+                    b.Navigation("Thread");
                 });
 
             modelBuilder.Entity("Forum_Dyskusyjne.Models.PrivateMessage", b =>
@@ -575,11 +581,15 @@ namespace Forum_Dyskusyjne.Migrations
                         .WithMany()
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("Forum_Dyskusyjne.Models.Forum", null)
+                    b.HasOne("Forum_Dyskusyjne.Models.Forum", "Forum")
                         .WithMany("Threads")
-                        .HasForeignKey("ForumId");
+                        .HasForeignKey("ForumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
+
+                    b.Navigation("Forum");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

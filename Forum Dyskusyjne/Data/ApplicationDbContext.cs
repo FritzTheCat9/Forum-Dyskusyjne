@@ -40,7 +40,6 @@ namespace Forum_Dyskusyjne.Data
                 new Rank { Id = 2, Name = "Begginer", MessagesNumber = 10 },
                 new Rank { Id = 3, Name = "More experienced", MessagesNumber = 50 }
             );
-
             // Reszta danych dodana jest w pliku DataInitializer
         }
     }

@@ -89,7 +89,7 @@ namespace Forum_Dyskusyjne.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: true)
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,7 +99,7 @@ namespace Forum_Dyskusyjne.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -306,8 +306,8 @@ namespace Forum_Dyskusyjne.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Views = table.Column<int>(type: "int", nullable: false),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ForumId = table.Column<int>(type: "int", nullable: true)
+                    ForumId = table.Column<int>(type: "int", nullable: false),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -323,7 +323,7 @@ namespace Forum_Dyskusyjne.Migrations
                         column: x => x.ForumId,
                         principalTable: "Forums",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -335,8 +335,8 @@ namespace Forum_Dyskusyjne.Migrations
                     Reported = table.Column<bool>(type: "bit", nullable: false),
                     Visible = table.Column<bool>(type: "bit", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ThreadId = table.Column<int>(type: "int", nullable: true)
+                    ThreadId = table.Column<int>(type: "int", nullable: false),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -352,7 +352,7 @@ namespace Forum_Dyskusyjne.Migrations
                         column: x => x.ThreadId,
                         principalTable: "Threads",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

@@ -17,6 +17,10 @@ namespace Forum_Dyskusyjne.Models
 
         public int Views { get; set; }
 
+        public int ForumId { get; set; }
+
+        public Forum Forum { get; set; }
+
         public User Author { get; set; }
 
         public ICollection<Attachment> Attachments { get; set; }
