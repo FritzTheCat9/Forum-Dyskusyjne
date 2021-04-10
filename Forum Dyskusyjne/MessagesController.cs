@@ -49,8 +49,8 @@ namespace Forum_Dyskusyjne
         // GET: Messages/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Id");
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
+            ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title");
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace Forum_Dyskusyjne
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", message.AuthorId);
-            ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Id", message.ThreadId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", message.AuthorId);
+            ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title", message.ThreadId);
             return View(message);
         }
 
@@ -85,8 +85,8 @@ namespace Forum_Dyskusyjne
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", message.AuthorId);
-            ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Id", message.ThreadId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", message.AuthorId);
+            ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title", message.ThreadId);
             return View(message);
         }
 
@@ -122,8 +122,8 @@ namespace Forum_Dyskusyjne
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", message.AuthorId);
-            ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Id", message.ThreadId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", message.AuthorId);
+            ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title", message.ThreadId);
             return View(message);
         }
 
