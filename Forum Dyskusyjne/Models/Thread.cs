@@ -21,6 +21,8 @@ namespace Forum_Dyskusyjne.Models
 
         public Forum Forum { get; set; }
 
+        public string AuthorId { get; set; }
+
         public User Author { get; set; }
 
         public ICollection<Attachment> Attachments { get; set; }

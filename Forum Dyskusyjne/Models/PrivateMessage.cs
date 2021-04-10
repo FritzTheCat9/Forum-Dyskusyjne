@@ -13,7 +13,11 @@ namespace Forum_Dyskusyjne.Models
 
         public string Text { get; set; }
 
+        public string AuthorId { get; set; }
+
         public User Author { get; set; }
+
+        public string RecerverId { get; set; }
 
         public User Recerver { get; set; }
 

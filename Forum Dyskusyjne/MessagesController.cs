@@ -22,7 +22,7 @@ namespace Forum_Dyskusyjne
         // GET: Messages
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Messages.Include(m => m.Thread);
+            var applicationDbContext = _context.Messages.Include(m => m.Author).Include(m => m.Thread);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace Forum_Dyskusyjne
             }
 
             var message = await _context.Messages
+                .Include(m => m.Author)
                 .Include(m => m.Thread)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (message == null)
@@ -48,6 +49,7 @@ namespace Forum_Dyskusyjne
         // GET: Messages/Create
         public IActionResult Create()
         {
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
             ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Id");
             return View();
         }
@@ -57,7 +59,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Reported,Visible,Text,ThreadId")] Message message)
+        public async Task<IActionResult> Create([Bind("Id,Reported,Visible,Text,ThreadId,AuthorId")] Message message)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +67,7 @@ namespace Forum_Dyskusyjne
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", message.AuthorId);
             ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Id", message.ThreadId);
             return View(message);
         }
@@ -82,6 +85,7 @@ namespace Forum_Dyskusyjne
             {
                 return NotFound();
             }
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", message.AuthorId);
             ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Id", message.ThreadId);
             return View(message);
         }
@@ -91,7 +95,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Reported,Visible,Text,ThreadId")] Message message)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Reported,Visible,Text,ThreadId,AuthorId")] Message message)
         {
             if (id != message.Id)
             {
@@ -118,6 +122,7 @@ namespace Forum_Dyskusyjne
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", message.AuthorId);
             ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Id", message.ThreadId);
             return View(message);
         }
@@ -131,6 +136,7 @@ namespace Forum_Dyskusyjne
             }
 
             var message = await _context.Messages
+                .Include(m => m.Author)
                 .Include(m => m.Thread)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (message == null)

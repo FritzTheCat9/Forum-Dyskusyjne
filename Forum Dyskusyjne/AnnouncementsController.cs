@@ -22,7 +22,8 @@ namespace Forum_Dyskusyjne
         // GET: Announcements
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Announcements.ToListAsync());
+            var applicationDbContext = _context.Announcements.Include(a => a.Author);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Announcements/Details/5
@@ -34,6 +35,7 @@ namespace Forum_Dyskusyjne
             }
 
             var announcement = await _context.Announcements
+                .Include(a => a.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (announcement == null)
             {
@@ -46,6 +48,7 @@ namespace Forum_Dyskusyjne
         // GET: Announcements/Create
         public IActionResult Create()
         {
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -54,7 +57,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Text")] Announcement announcement)
+        public async Task<IActionResult> Create([Bind("Id,Title,Text,AuthorId")] Announcement announcement)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +65,7 @@ namespace Forum_Dyskusyjne
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", announcement.AuthorId);
             return View(announcement);
         }
 
@@ -78,6 +82,7 @@ namespace Forum_Dyskusyjne
             {
                 return NotFound();
             }
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", announcement.AuthorId);
             return View(announcement);
         }
 
@@ -86,7 +91,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text")] Announcement announcement)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text,AuthorId")] Announcement announcement)
         {
             if (id != announcement.Id)
             {
@@ -113,6 +118,7 @@ namespace Forum_Dyskusyjne
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", announcement.AuthorId);
             return View(announcement);
         }
 
@@ -125,6 +131,7 @@ namespace Forum_Dyskusyjne
             }
 
             var announcement = await _context.Announcements
+                .Include(a => a.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (announcement == null)
             {
