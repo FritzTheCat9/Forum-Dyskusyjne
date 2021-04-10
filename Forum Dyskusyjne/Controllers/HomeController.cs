@@ -1,5 +1,6 @@
 ﻿using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
+using Forum_Dyskusyjne.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -24,10 +25,26 @@ namespace Forum_Dyskusyjne.Controllers
 
         public IActionResult Index()
         {
-            var t = _context.Forums.Include(x => x.Category).Include(x => x.Threads).Include(x => x.Moderators).Where(x => x.Id == 1).First();
+            var announcements = _context.Announcements.Include(x => x.Author).ToList();
+            var homeViewModel = new HomeViewModel { Announcements = announcements };
 
+            return View(homeViewModel);
+        }
 
-            return View();
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var announcement = await _context.Announcements.Include(x => x.Author).FirstOrDefaultAsync(m => m.Id == id);
+            if (announcement == null)
+            {
+                return NotFound();
+            }
+
+            return View(announcement);
         }
 
         public IActionResult Privacy()
