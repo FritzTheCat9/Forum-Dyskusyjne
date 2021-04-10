@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Forum_Dyskusyjne.Models.Thread>
+
+@{
+    ViewData["Title"] = "ShowForaThreads";
+}
+
+<h1>Wszystie wątki</h1>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Sticky)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Views)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Forum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sticky)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Views)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Forum.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.UserName)
+                </td>
+                <td>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <span>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id"> Delete </a> |
+                        </span>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-controller="Messages" asp-action="ShowThreadMessages" asp-route-id="@item.Id">Zobacz wątek</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

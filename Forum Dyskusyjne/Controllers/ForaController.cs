@@ -19,6 +19,17 @@ namespace Forum_Dyskusyjne
             _context = context;
         }
 
+        //------------------------------------------------------------------------------
+        // GET: Fora/LoadAllFora
+        public async Task<IActionResult> LoadAllFora()
+        {
+            var applicationDbContext = _context.Forums.Include(f => f.Category);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+
+        //------------------------------------------------------------------------------
+
         // GET: Fora
         public async Task<IActionResult> Index()
         {

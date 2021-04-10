@@ -18,6 +18,17 @@ namespace Forum_Dyskusyjne
         {
             _context = context;
         }
+        //------------------------------------------------------------------------------
+        // GET: Fora/ShowForaThreads/:id
+        public async Task<IActionResult> ShowThreadMessages(int id)
+        {
+            var applicationDbContext = _context.Messages.Include(m => m.Author).Include(m => m.Thread).Where(x=>x.ThreadId == id);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+
+        //------------------------------------------------------------------------------
+        
 
         // GET: Messages
         public async Task<IActionResult> Index()
