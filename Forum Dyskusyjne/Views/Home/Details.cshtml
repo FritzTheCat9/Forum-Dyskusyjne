@@ -1,0 +1,37 @@
+﻿@model Forum_Dyskusyjne.Models.Announcement
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Announcement</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-6">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dt class = "col-sm-6">
+            @Html.DisplayNameFor(model => model.Author.UserName)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.Author.UserName)
+        </dd>
+    </dl>
+     <dl class="row">
+        <dt class = "col-sm-12">
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+        <dd class = "col-sm-12">
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
