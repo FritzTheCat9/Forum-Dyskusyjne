@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Forum_Dyskusyjne
 {
@@ -20,6 +21,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: ForumUsers
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
            
@@ -29,6 +31,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: ForumUsers/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -49,6 +52,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: ForumUsers/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Name");
@@ -61,6 +65,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("Id,ForumId,UserId")] ForumUser forumUser)
         {
             if (ModelState.IsValid)
@@ -84,6 +89,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: ForumUsers/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -106,6 +112,7 @@ namespace Forum_Dyskusyjne
         // POST: ForumUsers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var forumUser = await _context.ForumUsers.FindAsync(id);

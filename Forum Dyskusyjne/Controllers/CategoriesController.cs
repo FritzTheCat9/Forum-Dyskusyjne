@@ -21,12 +21,14 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Categories
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Categories.ToListAsync());
         }
 
         // GET: Categories/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -69,6 +71,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Categories/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,6 +92,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
         {
             if (id != category.Id)
@@ -120,6 +124,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Categories/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -140,6 +145,7 @@ namespace Forum_Dyskusyjne
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var category = await _context.Categories.FindAsync(id);

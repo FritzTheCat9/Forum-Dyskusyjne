@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Forum_Dyskusyjne
 {
@@ -20,6 +21,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: PrivateMessages
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.PrivateMessages.Include(p => p.Author).Include(p => p.Receiver);
@@ -27,6 +29,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: PrivateMessages/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -47,6 +50,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: PrivateMessages/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
@@ -59,6 +63,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("Id,Title,Text,AuthorId,ReceiverId")] PrivateMessage privateMessage)
         {
             if (ModelState.IsValid)
@@ -73,6 +78,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: PrivateMessages/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,6 +101,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text,AuthorId,ReceiverId")] PrivateMessage privateMessage)
         {
             if (id != privateMessage.Id)
@@ -128,6 +135,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: PrivateMessages/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -150,6 +158,7 @@ namespace Forum_Dyskusyjne
         // POST: PrivateMessages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var privateMessage = await _context.PrivateMessages.FindAsync(id);

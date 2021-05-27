@@ -1,6 +1,7 @@
 ﻿using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
 using Forum_Dyskusyjne.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace Forum_Dyskusyjne.Controllers
         }
 
         // GET: User
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var users = _context.Users.Include(u => u.Rank).Include(u => u.Forums);
@@ -28,6 +30,7 @@ namespace Forum_Dyskusyjne.Controllers
         }
 
         // GET: User/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -50,6 +53,7 @@ namespace Forum_Dyskusyjne.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(string id, [Bind("Id,RankId")] User USER)
         {
             var user = await _context.Users.Include(u => u.Rank).Include(u => u.Forums)

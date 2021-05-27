@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Forum_Dyskusyjne
 {
@@ -20,6 +21,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Announcements
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Announcements.Include(a => a.Author);
@@ -27,6 +29,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Announcements/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,6 +49,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Announcements/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
@@ -57,6 +61,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("Id,Title,Text,AuthorId")] Announcement announcement)
         {
             if (ModelState.IsValid)
@@ -70,6 +75,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Announcements/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,6 +97,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text,AuthorId")] Announcement announcement)
         {
             if (id != announcement.Id)
@@ -123,6 +130,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Announcements/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -144,6 +152,7 @@ namespace Forum_Dyskusyjne
         // POST: Announcements/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var announcement = await _context.Announcements.FindAsync(id);

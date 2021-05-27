@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Forum_Dyskusyjne
 {
@@ -20,12 +21,14 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: ForbiddenWords
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.ForbiddenWords.ToListAsync());
         }
 
         // GET: ForbiddenWords/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,6 +47,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: ForbiddenWords/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return View();
@@ -54,6 +58,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("Id,Name")] ForbiddenWord forbiddenWord)
         {
             if (ModelState.IsValid)
@@ -66,6 +71,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: ForbiddenWords/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,6 +92,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] ForbiddenWord forbiddenWord)
         {
             if (id != forbiddenWord.Id)
@@ -117,6 +124,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: ForbiddenWords/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,6 +145,7 @@ namespace Forum_Dyskusyjne
         // POST: ForbiddenWords/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var forbiddenWord = await _context.ForbiddenWords.FindAsync(id);
