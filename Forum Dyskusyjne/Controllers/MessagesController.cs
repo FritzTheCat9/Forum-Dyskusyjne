@@ -18,6 +18,7 @@ namespace Forum_Dyskusyjne
         {
             _context = context;
         }
+
         //------------------------------------------------------------------------------
         // GET: Fora/ShowForaThreads/:id
         public async Task<IActionResult> ShowThreadMessages(int id)
@@ -26,9 +27,66 @@ namespace Forum_Dyskusyjne
             return View("Index", await applicationDbContext.ToListAsync());
         }
 
+        /// <summary>
+        /// Sprawdzenie czy user o podanym id jest moderatorem forum o podanym id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="forumId"></param>
+        /// <returns>Null - nie jest moderatorem, obiekt ForumUser - jest moderatorem</returns>
+        public bool CheckIsForumModerator(int forumId)
+        {
+            string LoggedUserEmail = User.Identity.Name;
+            User user = _context.Users
+                 .Where(x => x.Email == LoggedUserEmail)
+                 .FirstOrDefault();
 
-        //------------------------------------------------------------------------------
+            if (user != null)
+            {
+                ForumUser forumUser = _context.ForumUsers
+                .Where(x => x.UserId == user.Id)
+                .Where(x => x.ForumId == forumId)
+                .FirstOrDefault();
+
+                if(forumUser != null)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public bool IsMessageAuthor(int messageId)
+        {
+            string LoggedUserEmail = User.Identity.Name;
+            Message message = _context.Messages
+                .Include(x => x.Author)
+                .Where(x => x.Id == messageId)
+                .FirstOrDefault();
+            User user = _context.Users
+                .Where(x => x.Email == LoggedUserEmail)
+                .FirstOrDefault();
+
+            if (message != null && user != null)
+            {
+                if (message.Author.Id == user.Id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         
+        public bool CheckIsAdmin()
+        {
+            if (User.IsInRole("Administrator"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+        //------------------------------------------------------------------------------
+
 
         // GET: Messages
         public async Task<IActionResult> Index()
@@ -91,14 +149,25 @@ namespace Forum_Dyskusyjne
                 return NotFound();
             }
 
-            var message = await _context.Messages.FindAsync(id);
+            var message = await _context.Messages
+                .Include(x => x.Thread)
+                .ThenInclude(x => x.Forum)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
             if (message == null)
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", message.AuthorId);
-            ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title", message.ThreadId);
-            return View(message);
+
+            int forumId = message.Thread.Forum.Id;
+            if (CheckIsForumModerator(forumId) || IsMessageAuthor(message.Id) || CheckIsAdmin())
+            {
+                ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", message.AuthorId);
+                ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title", message.ThreadId);
+                return View(message);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Messages/Edit/5
@@ -149,13 +218,20 @@ namespace Forum_Dyskusyjne
             var message = await _context.Messages
                 .Include(m => m.Author)
                 .Include(m => m.Thread)
+                .ThenInclude(x => x.Forum)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (message == null)
             {
                 return NotFound();
             }
 
-            return View(message);
+            int forumId = message.Thread.Forum.Id;
+            if (CheckIsForumModerator(forumId) || IsMessageAuthor(message.Id) || CheckIsAdmin())
+            {
+                return View(message);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Messages/Delete/5
