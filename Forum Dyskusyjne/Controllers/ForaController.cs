@@ -24,8 +24,8 @@ namespace Forum_Dyskusyjne
         // GET: Fora/LoadAllFora
         /*public async Task<IActionResult> LoadAllFora()
         {
-            var applicationDbContext = _context.Forums.Include(f => f.Category);
-            return View(await applicationDbContext.ToListAsync());
+            var forums = _context.Forums.Include(f => f.Category);
+            return View(await forums.ToListAsync());
         }*/
 
 

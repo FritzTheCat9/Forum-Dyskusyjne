@@ -22,10 +22,9 @@ namespace Forum_Dyskusyjne
         // GET: Fora/ShowForaThreads/:id
         public async Task<IActionResult> ShowForaThreads(int id)
         {
-            var applicationDbContext = _context.Threads.Include(t => t.Author).Include(t => t.Forum).Where(x => x.ForumId == id);
-            return View("Index", await applicationDbContext.ToListAsync());
+            var threads = _context.Threads.Include(t => t.Author).Include(t => t.Forum).Include(x => x.Messages).Where(x => x.ForumId == id);
+            return View("Index", await threads.ToListAsync());
         }
-
 
         //------------------------------------------------------------------------------
 
@@ -52,6 +51,9 @@ namespace Forum_Dyskusyjne
             {
                 return NotFound();
             }
+
+             thread.Views++;                // zliczanie odsłon wątku
+            _context.SaveChanges();
 
             return View(thread);
         }

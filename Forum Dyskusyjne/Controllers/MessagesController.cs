@@ -24,8 +24,16 @@ namespace Forum_Dyskusyjne
         // GET: Fora/ShowForaThreads/:id
         public async Task<IActionResult> ShowThreadMessages(int id)
         {
-            var applicationDbContext = _context.Messages.Include(m => m.Author).Include(m => m.Thread).Where(x => x.ThreadId == id);
-            return View("Index", await applicationDbContext.ToListAsync());
+            var messages = _context.Messages.Include(m => m.Author).Include(m => m.Thread).Where(x => x.ThreadId == id);
+
+            var thread = _context.Threads.FirstOrDefault(x => x.Id == id);          // zliczanie odsłon wątku
+            if(thread != null)
+            {
+                thread.Views++;
+                _context.SaveChanges();
+            }
+
+            return View("Index", await messages.ToListAsync());
         }
 
         /// <summary>

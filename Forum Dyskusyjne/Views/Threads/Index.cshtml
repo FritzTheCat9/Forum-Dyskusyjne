@@ -25,6 +25,9 @@
                 @Html.DisplayNameFor(model => model.Views)
             </th>
             <th>
+                Replies
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Forum)
             </th>
             <th>
@@ -47,6 +50,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Views)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Messages.Count)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Forum.Name)
