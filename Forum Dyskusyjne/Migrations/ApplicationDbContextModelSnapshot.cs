@@ -19,21 +19,6 @@ namespace Forum_Dyskusyjne.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ForumUser", b =>
-                {
-                    b.Property<int>("ForumsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ModeratorsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ForumsId", "ModeratorsId");
-
-                    b.HasIndex("ModeratorsId");
-
-                    b.ToTable("ForumUser");
-                });
-
             modelBuilder.Entity("Forum_Dyskusyjne.Models.Announcement", b =>
                 {
                     b.Property<int>("Id")
@@ -135,6 +120,28 @@ namespace Forum_Dyskusyjne.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Forums");
+                });
+
+            modelBuilder.Entity("Forum_Dyskusyjne.Models.ForumUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ForumId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ForumId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ForumUsers");
                 });
 
             modelBuilder.Entity("Forum_Dyskusyjne.Models.Message", b =>
@@ -491,21 +498,6 @@ namespace Forum_Dyskusyjne.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("ForumUser", b =>
-                {
-                    b.HasOne("Forum_Dyskusyjne.Models.Forum", null)
-                        .WithMany()
-                        .HasForeignKey("ForumsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Forum_Dyskusyjne.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("ModeratorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Forum_Dyskusyjne.Models.Announcement", b =>
                 {
                     b.HasOne("Forum_Dyskusyjne.Models.User", "Author")
@@ -539,6 +531,23 @@ namespace Forum_Dyskusyjne.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Forum_Dyskusyjne.Models.ForumUser", b =>
+                {
+                    b.HasOne("Forum_Dyskusyjne.Models.Forum", "Forum")
+                        .WithMany("Users")
+                        .HasForeignKey("ForumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Forum_Dyskusyjne.Models.User", "User")
+                        .WithMany("Forums")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Forum");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Forum_Dyskusyjne.Models.Message", b =>
@@ -653,6 +662,8 @@ namespace Forum_Dyskusyjne.Migrations
             modelBuilder.Entity("Forum_Dyskusyjne.Models.Forum", b =>
                 {
                     b.Navigation("Threads");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Forum_Dyskusyjne.Models.Message", b =>
@@ -670,6 +681,11 @@ namespace Forum_Dyskusyjne.Migrations
                     b.Navigation("Attachments");
 
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Forum_Dyskusyjne.Models.User", b =>
+                {
+                    b.Navigation("Forums");
                 });
 #pragma warning restore 612, 618
         }

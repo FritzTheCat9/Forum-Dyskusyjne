@@ -16,6 +16,6 @@ namespace Forum_Dyskusyjne.Models
 
         public Rank Rank { get; set; }
 
-        public ICollection<Forum> Forums { get; set; }
+        public ICollection<ForumUser> Forums { get; set; }
     }
 }

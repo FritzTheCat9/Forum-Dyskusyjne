@@ -18,6 +18,6 @@ namespace Forum_Dyskusyjne.Models
 
         public ICollection<Thread> Threads { get; set; }
 
-        public ICollection<User> Moderators { get; set; }
+        public ICollection<ForumUser> Users { get; set; }
     }
 }

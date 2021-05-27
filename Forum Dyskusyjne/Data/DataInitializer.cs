@@ -256,12 +256,14 @@ namespace Forum_Dyskusyjne.Data
                
                             }
                         }
-                    },
-                    Moderators = new List<User>()
+                    }/*,
+                    Users = new List<ForumUser>()
                     {
+                        new ForumUser { User = userManager.FindByEmailAsync("bartlomiejuminski1999@gmail.com").Result, Forum = }
+
                         userManager.FindByEmailAsync("bartlomiejuminski1999@gmail.com").Result,
                         userManager.FindByEmailAsync("user@gmail.com").Result
-                    }
+                    }*/
                 },
                 new Forum { Name = "Brickleberry", Category = context.Categories.Where(x => x.Id == 2).First(),
                     Threads = new List<Thread>()
@@ -271,15 +273,15 @@ namespace Forum_Dyskusyjne.Data
                             {
                                 /*context.Messages.Where(x => x.Id == 4).First(),
                                 context.Messages.Where(x => x.Id == 5).First()*/
-                                 new Message { Author = user2, Text = "Zawartość wiadomości", Visible = true, Reported = false },
+                                new Message { Author = user2, Text = "Zawartość wiadomości", Visible = true, Reported = false },
                                 new Message { Author = user1, Text = "Zawartość wiadomości" , Visible = true, Reported = false }
                             }
                         }
-                    },
-                    Moderators = new List<User>()
+                    }/*,
+                    Users = new List<ForumUser>()
                     {
                         userManager.FindByEmailAsync("bartlomiejuminski1999@gmail.com").Result
-                    }
+                    }*/
                 }
             };
             foreach (var forum in forums.Reverse())
@@ -294,6 +296,14 @@ namespace Forum_Dyskusyjne.Data
                 }
                 context.Forums.Add(forum);
             }
+
+            /* ForumUsers = Moderators */
+            var forumUsers = new ForumUser[] {
+                new ForumUser { Forum = forums[0], User = userManager.FindByEmailAsync("bartlomiejuminski1999@gmail.com").Result },
+                new ForumUser { Forum = forums[0], User = userManager.FindByEmailAsync("user@gmail.com").Result },
+                new ForumUser { Forum = forums[1], User = userManager.FindByEmailAsync("bartlomiejuminski1999@gmail.com").Result }
+            };
+            context.ForumUsers.AddRange(forumUsers);
             context.SaveChanges();
         }
     }

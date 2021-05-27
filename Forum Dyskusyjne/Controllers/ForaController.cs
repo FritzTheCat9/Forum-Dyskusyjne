@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Forum_Dyskusyjne
 {
@@ -21,11 +22,11 @@ namespace Forum_Dyskusyjne
 
         //------------------------------------------------------------------------------
         // GET: Fora/LoadAllFora
-        public async Task<IActionResult> LoadAllFora()
+        /*public async Task<IActionResult> LoadAllFora()
         {
             var applicationDbContext = _context.Forums.Include(f => f.Category);
             return View(await applicationDbContext.ToListAsync());
-        }
+        }*/
 
 
         //------------------------------------------------------------------------------
@@ -47,6 +48,8 @@ namespace Forum_Dyskusyjne
 
             var forum = await _context.Forums
                 .Include(f => f.Category)
+                .Include(f => f.Users)
+                .ThenInclude(f => f.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (forum == null)
             {
@@ -57,6 +60,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Fora/Create
+        [Authorize(Roles ="Administrator")]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
@@ -68,6 +72,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> Create([Bind("Id,Name,CategoryId")] Forum forum)
         {
             if (ModelState.IsValid)

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Forum_Dyskusyjne.Migrations
 {
-    public partial class migracja : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -245,24 +245,26 @@ namespace Forum_Dyskusyjne.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ForumUser",
+                name: "ForumUsers",
                 columns: table => new
                 {
-                    ForumsId = table.Column<int>(type: "int", nullable: false),
-                    ModeratorsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ForumId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ForumUser", x => new { x.ForumsId, x.ModeratorsId });
+                    table.PrimaryKey("PK_ForumUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ForumUser_AspNetUsers_ModeratorsId",
-                        column: x => x.ModeratorsId,
+                        name: "FK_ForumUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ForumUser_Forums_ForumsId",
-                        column: x => x.ForumsId,
+                        name: "FK_ForumUsers_Forums_ForumId",
+                        column: x => x.ForumId,
                         principalTable: "Forums",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -474,9 +476,14 @@ namespace Forum_Dyskusyjne.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ForumUser_ModeratorsId",
-                table: "ForumUser",
-                column: "ModeratorsId");
+                name: "IX_ForumUsers_ForumId",
+                table: "ForumUsers",
+                column: "ForumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumUsers_UserId",
+                table: "ForumUsers",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_AuthorId",
@@ -536,7 +543,7 @@ namespace Forum_Dyskusyjne.Migrations
                 name: "ForbiddenWords");
 
             migrationBuilder.DropTable(
-                name: "ForumUser");
+                name: "ForumUsers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

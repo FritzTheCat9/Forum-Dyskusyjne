@@ -22,8 +22,8 @@ namespace Forum_Dyskusyjne
         // GET: Fora/ShowForaThreads/:id
         public async Task<IActionResult> ShowThreadMessages(int id)
         {
-            var applicationDbContext = _context.Messages.Include(m => m.Author).Include(m => m.Thread).Where(x=>x.ThreadId == id);
-            return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = _context.Messages.Include(m => m.Author).Include(m => m.Thread).Where(x => x.ThreadId == id);
+            return View("Index", await applicationDbContext.ToListAsync());
         }
 
 
