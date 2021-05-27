@@ -267,8 +267,9 @@ namespace Forum_Dyskusyjne
                     if (!ContainsForbiddenWords(messageToUpdate))
                     {
                         _context.Update(messageToUpdate);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                        await _context.SaveChangesAsync(); 
+                        int threadId = messageToUpdate.Thread.Id;
+                        return RedirectToAction("ShowThreadMessages", new { id = threadId });
                     }
                 }
                 catch (DbUpdateConcurrencyException)

@@ -227,7 +227,9 @@ namespace Forum_Dyskusyjne
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                int forumId = threadToUpdate.Forum.Id;
+                return RedirectToAction("ShowForaThreads", new { id = forumId });
             }
             ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Name", threadToUpdate.ForumId);
             return View(threadToUpdate);
