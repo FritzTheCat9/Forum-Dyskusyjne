@@ -34,8 +34,8 @@ namespace Forum_Dyskusyjne
         // GET: Fora
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Forums.Include(f => f.Category);
-            return View(await applicationDbContext.ToListAsync());
+            var forums = _context.Forums.Include(f => f.Category).Include(x => x.Threads).ThenInclude(x => x.Messages);
+            return View(await forums.ToListAsync());
         }
 
         // GET: Fora/Details/5

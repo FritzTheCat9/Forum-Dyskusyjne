@@ -23,8 +23,8 @@ namespace Forum_Dyskusyjne.Controllers
         // GET: User
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Users.Include(u => u.Rank).Include(u => u.Forums);
-            return View(await applicationDbContext.ToListAsync());
+            var users = _context.Users.Include(u => u.Rank).Include(u => u.Forums);
+            return View(await users.ToListAsync());
         }
 
         // GET: User/Details/5
