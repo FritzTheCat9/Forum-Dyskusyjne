@@ -13,11 +13,15 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Sticky" /> @Html.DisplayNameFor(model => model.Sticky)
-                </label>
-            </div>
+
+            @if (User.IsInRole("Administrator"))
+            {
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Sticky" /> @Html.DisplayNameFor(model => model.Sticky)
+                    </label>
+                </div>
+            }
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />

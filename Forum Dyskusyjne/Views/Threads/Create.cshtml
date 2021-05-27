@@ -12,11 +12,14 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Sticky" /> @Html.DisplayNameFor(model => model.Sticky)
-                </label>
-            </div>
+            @if (User.IsInRole("Administrator"))
+            {
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Sticky" /> @Html.DisplayNameFor(model => model.Sticky)
+                    </label>
+                </div>
+            }
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -34,11 +37,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="Forum" class="control-label"></label>
-                <select asp-for="ForumId" class ="form-control" asp-items="ViewBag.ForumId"></select>
+                <select asp-for="ForumId" class="form-control" asp-items="ViewBag.ForumId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Author" class="control-label"></label>
-                <select asp-for="AuthorId" class ="form-control" asp-items="ViewBag.AuthorId"></select>
+                <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

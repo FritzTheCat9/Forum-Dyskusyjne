@@ -227,7 +227,8 @@ namespace Forum_Dyskusyjne
                 return View(message);
             }
 
-            return RedirectToAction(nameof(Index));
+            int threadId = message.Thread.Id;
+            return RedirectToAction("ShowThreadMessages", new { id = threadId });
         }
 
         // POST: Messages/Edit/5
@@ -296,7 +297,8 @@ namespace Forum_Dyskusyjne
                 return View(message);
             }
 
-            return RedirectToAction(nameof(Index));
+            int threadId = message.Thread.Id;
+            return RedirectToAction("ShowThreadMessages", new { id = threadId });
         }
 
         // POST: Messages/Delete/5
