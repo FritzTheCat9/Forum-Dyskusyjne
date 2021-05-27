@@ -85,6 +85,26 @@ namespace Forum_Dyskusyjne
 
             return false;
         }
+
+        public bool ContainsForbiddenWords(Message message)
+        {
+            var forbiddenWords = _context.ForbiddenWords.ToList();
+
+            string[] words = message.Text.ToLower().Split(' ');
+
+            foreach (var word in words)
+            {
+                foreach (var forbidden in forbiddenWords)
+                {
+                    if(word == forbidden.Name.ToLower())
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
         //------------------------------------------------------------------------------
 
 
@@ -132,9 +152,12 @@ namespace Forum_Dyskusyjne
         {
             if (ModelState.IsValid)
             {
-                _context.Add(message);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if(!ContainsForbiddenWords(message))
+                {
+                    _context.Add(message);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", message.AuthorId);
             ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title", message.ThreadId);
