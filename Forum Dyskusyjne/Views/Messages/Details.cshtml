@@ -25,8 +25,34 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Text)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Text)
+        <dd class="col-sm-10">
+            @foreach (string word in Model.Text.Split(" "))
+            {
+                @switch (word)
+                {
+                    case ":(":
+                        @Html.Raw("🙁" + " ")
+                        break;
+                    case ":)":
+                        @Html.Raw("😀" + " ")
+                        break;
+                    case "XD":
+                        @Html.Raw("😆" + " ")
+                        break;
+                    case "xD":
+                        @Html.Raw("😆" + " ")
+                        break;
+                    case "poop":
+                        @Html.Raw("💩" + " ")
+                        break;
+                    case "sad":
+                        @Html.Raw("😭" + " ")
+                        break;
+                    default:
+                        @Html.Raw(word + " ")
+                        break;
+                }
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Thread)

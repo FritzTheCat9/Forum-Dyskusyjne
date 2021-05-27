@@ -22,6 +22,8 @@ namespace Forum_Dyskusyjne
         // GET: ForumUsers
         public async Task<IActionResult> Index()
         {
+           
+
             var applicationDbContext = _context.ForumUsers.Include(f => f.Forum).Include(f => f.User);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -29,6 +31,20 @@ namespace Forum_Dyskusyjne
         // GET: ForumUsers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var text = "siema \x263A";
+            var coded = "";
+            foreach (string word in text.Split(" "))
+            {
+                if (word.Contains("\x263A"))
+                {
+                    char a = (char.Parse(word));
+                }
+                else
+                {
+                    coded += word + " ";
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();

@@ -238,7 +238,7 @@ namespace Forum_Dyskusyjne.Data
                                  /*context.Messages.Where(x => x.Id == 1).First(),
                                  context.Messages.Where(x => x.Id == 2).First()*/
 
-                                  new Message { Author = user1, Text = "Zawartość wiadomości", Visible = true, Reported = false,
+                                  new Message { Author = user1, Text = "Zawartość wiadomości :( :) XD xD poop sad", Visible = true, Reported = false,
                                     Attachments = new List<Attachment>()
                                     {
                                         context.Attachments.Where(x => x.Id == 4).First()
