@@ -172,7 +172,6 @@ namespace Forum_Dyskusyjne
         [Authorize(Roles = "Administrator,NormalUser")]
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
             ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title");
             return View();
         }
@@ -183,19 +182,24 @@ namespace Forum_Dyskusyjne
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,NormalUser")]
-        public async Task<IActionResult> Create([Bind("Id,Reported,Visible,Text,ThreadId,AuthorId")] Message message)
+        public async Task<IActionResult> Create([Bind("Id,Reported,Visible,Text,ThreadId")] Message message)
         {
             if (ModelState.IsValid)
             {
-                if(!ContainsForbiddenWords(message))
+                if (!ContainsForbiddenWords(message))
                 {
+                    string LoggedUserEmail = User.Identity.Name;
+                    User user = _context.Users
+                         .Where(x => x.Email == LoggedUserEmail)
+                         .FirstOrDefault();
+                    message.AuthorId = user.Id;
+
                     AktualizujRange();
                     _context.Add(message);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", message.AuthorId);
             ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title", message.ThreadId);
             return View(message);
         }
@@ -222,7 +226,6 @@ namespace Forum_Dyskusyjne
             int forumId = message.Thread.Forum.Id;
             if (CheckIsForumModerator(forumId) || IsMessageAuthor(message.Id) || CheckIsAdmin())
             {
-                ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", message.AuthorId);
                 ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title", message.ThreadId);
                 return View(message);
             }
@@ -237,8 +240,21 @@ namespace Forum_Dyskusyjne
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,NormalUser")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Reported,Visible,Text,ThreadId,AuthorId")] Message message)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Reported,Visible,Text,ThreadId")] Message message)
         {
+            var messageToUpdate = await _context.Messages
+                .Include(x => x.Author)
+                .Include(x => x.Thread)
+                .ThenInclude(x => x.Forum)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            messageToUpdate.Id = message.Id;
+            messageToUpdate.Reported = message.Reported;
+            messageToUpdate.Visible = message.Visible;
+            messageToUpdate.Text = message.Text;
+            messageToUpdate.ThreadId = message.ThreadId;
+
             if (id != message.Id)
             {
                 return NotFound();
@@ -248,16 +264,16 @@ namespace Forum_Dyskusyjne
             {
                 try
                 {
-                    if (!ContainsForbiddenWords(message))
+                    if (!ContainsForbiddenWords(messageToUpdate))
                     {
-                        _context.Update(message);
+                        _context.Update(messageToUpdate);
                         await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(Index));
                     }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MessageExists(message.Id))
+                    if (!MessageExists(messageToUpdate.Id))
                     {
                         return NotFound();
                     }
@@ -267,9 +283,8 @@ namespace Forum_Dyskusyjne
                     }
                 }
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", message.AuthorId);
-            ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title", message.ThreadId);
-            return View(message);
+            ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title", messageToUpdate.ThreadId);
+            return View(messageToUpdate);
         }
 
         // GET: Messages/Delete/5
