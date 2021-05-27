@@ -209,8 +209,12 @@ namespace Forum_Dyskusyjne
             {
                 try
                 {
-                    _context.Update(message);
-                    await _context.SaveChangesAsync();
+                    if (!ContainsForbiddenWords(message))
+                    {
+                        _context.Update(message);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -223,7 +227,6 @@ namespace Forum_Dyskusyjne
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", message.AuthorId);
             ViewData["ThreadId"] = new SelectList(_context.Threads, "Id", "Title", message.ThreadId);
