@@ -14,6 +14,8 @@ namespace Forum_Dyskusyjne.Models
 
         public int MessageNumber { get; set; }
 
+        public int RankId { get; set; }
+
         public Rank Rank { get; set; }
 
         public ICollection<ForumUser> Forums { get; set; }

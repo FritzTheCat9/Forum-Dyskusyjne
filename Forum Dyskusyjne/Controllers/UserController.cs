@@ -1,4 +1,6 @@
 ﻿using Forum_Dyskusyjne.Data;
+using Forum_Dyskusyjne.Models;
+using Forum_Dyskusyjne.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +42,33 @@ namespace Forum_Dyskusyjne.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["RankId"] = new SelectList(_context.Ranks, "Id", "Name");
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(string id, [Bind("Id,RankId")] User USER)
+        {
+            var user = await _context.Users.Include(u => u.Rank).Include(u => u.Forums)
+                .ThenInclude(f => f.Forum)
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Rank = await _context.Ranks.Where(x => x.Id == USER.RankId).FirstOrDefaultAsync();             // change user rank
+
+            if (ModelState.IsValid)
+            {
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+            }
+
+            ViewData["RankId"] = new SelectList(_context.Ranks, "Id", "Name");
 
             return View(user);
         }

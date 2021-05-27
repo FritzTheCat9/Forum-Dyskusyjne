@@ -31,20 +31,6 @@ namespace Forum_Dyskusyjne
         // GET: ForumUsers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            var text = "siema \x263A";
-            var coded = "";
-            foreach (string word in text.Split(" "))
-            {
-                if (word.Contains("\x263A"))
-                {
-                    char a = (char.Parse(word));
-                }
-                else
-                {
-                    coded += word + " ";
-                }
-            }
-
             if (id == null)
             {
                 return NotFound();

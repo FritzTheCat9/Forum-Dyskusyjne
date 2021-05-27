@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Forum_Dyskusyjne.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210527084340_init")]
+    [Migration("20210527161241_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace Forum_Dyskusyjne.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.4")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Forum_Dyskusyjne.Models.Announcement", b =>
@@ -492,7 +492,7 @@ namespace Forum_Dyskusyjne.Migrations
                     b.Property<int>("MessagePaging")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RankId")
+                    b.Property<int>("RankId")
                         .HasColumnType("int");
 
                     b.HasIndex("RankId");
@@ -656,7 +656,9 @@ namespace Forum_Dyskusyjne.Migrations
                 {
                     b.HasOne("Forum_Dyskusyjne.Models.Rank", "Rank")
                         .WithMany()
-                        .HasForeignKey("RankId");
+                        .HasForeignKey("RankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Rank");
                 });

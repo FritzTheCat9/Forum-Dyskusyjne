@@ -135,7 +135,7 @@ namespace Forum_Dyskusyjne.Migrations
                         column: x => x.RankId,
                         principalTable: "Ranks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

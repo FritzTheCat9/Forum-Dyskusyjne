@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Forum_Dyskusyjne
 {
@@ -105,6 +106,30 @@ namespace Forum_Dyskusyjne
 
             return false;
         }
+
+        public void AktualizujRange()
+        {
+            string LoggedUserEmail = User.Identity.Name;
+            User user = _context.Users
+                .Include(x => x.Rank)
+                .Where(x => x.Email == LoggedUserEmail)
+                .FirstOrDefault();
+
+            user.MessageNumber++;
+
+            var maxMessageNumber = user.Rank.MessagesNumber;
+            List<Rank> ranks = _context.Ranks.ToList();
+            foreach (var rank in ranks)
+            {
+                if(user.MessageNumber >= rank.MessagesNumber)
+                {
+                    if(rank.MessagesNumber > maxMessageNumber)
+                    {
+                        user.Rank = rank;
+                    }
+                }
+            }
+        }
         //------------------------------------------------------------------------------
 
 
@@ -136,6 +161,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Messages/Create
+        [Authorize(Roles = "Administrator,NormalUser")]
         public IActionResult Create()
         {
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
@@ -148,12 +174,14 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,NormalUser")]
         public async Task<IActionResult> Create([Bind("Id,Reported,Visible,Text,ThreadId,AuthorId")] Message message)
         {
             if (ModelState.IsValid)
             {
                 if(!ContainsForbiddenWords(message))
                 {
+                    AktualizujRange();
                     _context.Add(message);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -165,6 +193,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Messages/Edit/5
+        [Authorize(Roles = "Administrator,NormalUser")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -198,6 +227,7 @@ namespace Forum_Dyskusyjne
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,NormalUser")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Reported,Visible,Text,ThreadId,AuthorId")] Message message)
         {
             if (id != message.Id)
@@ -234,6 +264,7 @@ namespace Forum_Dyskusyjne
         }
 
         // GET: Messages/Delete/5
+        [Authorize(Roles = "Administrator,NormalUser")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -263,6 +294,7 @@ namespace Forum_Dyskusyjne
         // POST: Messages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,NormalUser")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var message = await _context.Messages.FindAsync(id);
