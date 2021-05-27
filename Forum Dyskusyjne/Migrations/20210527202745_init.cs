@@ -336,7 +336,7 @@ namespace Forum_Dyskusyjne.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Reported = table.Column<bool>(type: "bit", nullable: false),
                     Visible = table.Column<bool>(type: "bit", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ThreadId = table.Column<int>(type: "int", nullable: false),
                     AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },

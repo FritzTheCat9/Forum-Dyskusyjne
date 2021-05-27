@@ -158,6 +158,7 @@ namespace Forum_Dyskusyjne.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ThreadId")

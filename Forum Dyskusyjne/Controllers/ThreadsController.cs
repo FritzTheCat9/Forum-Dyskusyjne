@@ -117,7 +117,6 @@ namespace Forum_Dyskusyjne
         [Authorize(Roles = "Administrator,NormalUser")]
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
             ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Name");
             return View();
         }
@@ -128,10 +127,16 @@ namespace Forum_Dyskusyjne
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,NormalUser")]
-        public async Task<IActionResult> Create([Bind("Id,Sticky,Title,Text,Views,ForumId,AuthorId")] Thread thread)
+        public async Task<IActionResult> Create([Bind("Id,Sticky,Title,Text,Views,ForumId")] Thread thread)
         {
             if (ModelState.IsValid)
             {
+                string LoggedUserEmail = User.Identity.Name;
+                User user = _context.Users
+                     .Where(x => x.Email == LoggedUserEmail)
+                     .FirstOrDefault();
+                thread.AuthorId = user.Id;
+
                 if (User.IsInRole("NormalUser"))
                 {
                     thread.Sticky = false;
@@ -141,7 +146,6 @@ namespace Forum_Dyskusyjne
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", thread.AuthorId);
             ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Name", thread.ForumId);
             return View(thread);
         }
@@ -157,6 +161,7 @@ namespace Forum_Dyskusyjne
 
             var thread = await _context.Threads
                 .Include(x => x.Forum)
+                .Include(x => x.Author)
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
             if (thread == null)
@@ -166,7 +171,6 @@ namespace Forum_Dyskusyjne
             int forumId = thread.Forum.Id;
             if (CheckIsForumModerator(forumId) || IsThreadAuthor(thread.Id) || CheckIsAdmin())
             {
-                ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", thread.AuthorId);
                 ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Name", thread.ForumId);
                 return View(thread);
             }
@@ -180,8 +184,21 @@ namespace Forum_Dyskusyjne
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator,NormalUser")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Sticky,Title,Text,Views,ForumId,AuthorId")] Thread thread)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Sticky,Title,Text,Views,ForumId")] Thread thread)
         {
+            var threadToUpdate = await _context.Threads
+                .Include(x => x.Forum)
+                .Include(x => x.Author)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            threadToUpdate.Id = thread.Id;
+            threadToUpdate.Sticky = thread.Sticky;
+            threadToUpdate.Title = thread.Title;
+            threadToUpdate.Text = thread.Text;
+            threadToUpdate.Views = thread.Views;
+            threadToUpdate.ForumId = thread.ForumId;
+
             if (id != thread.Id)
             {
                 return NotFound();
@@ -193,15 +210,15 @@ namespace Forum_Dyskusyjne
                 {
                     if (User.IsInRole("NormalUser"))
                     {
-                        thread.Sticky = false;
+                        threadToUpdate.Sticky = false;
                     }
 
-                    _context.Update(thread);
+                    _context.Update(threadToUpdate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ThreadExists(thread.Id))
+                    if (!ThreadExists(threadToUpdate.Id))
                     {
                         return NotFound();
                     }
@@ -212,9 +229,8 @@ namespace Forum_Dyskusyjne
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", thread.AuthorId);
-            ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Name", thread.ForumId);
-            return View(thread);
+            ViewData["ForumId"] = new SelectList(_context.Forums, "Id", "Name", threadToUpdate.ForumId);
+            return View(threadToUpdate);
         }
 
         // GET: Threads/Delete/5

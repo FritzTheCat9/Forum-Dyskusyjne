@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Forum_Dyskusyjne.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210527161241_init")]
+    [Migration("20210527202745_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,6 +160,7 @@ namespace Forum_Dyskusyjne.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ThreadId")
