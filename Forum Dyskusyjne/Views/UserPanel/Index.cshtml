@@ -7,7 +7,22 @@
 <h1>UserPanel</h1>
 
 <h4>User avatar:</h4>
-<img src="@Url.Content(Model.AvatarPath)" width="200" height="200">
+@if (User.Identity.IsAuthenticated && Url.Content(Model.AvatarPath) != null)
+{
+    <img src="@Url.Content(Model.AvatarPath)">
+}
+<p>
+    @ViewBag.Message
+</p>
+
+<form class="col-sm-4" method="post" asp-action="Index" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="file" class="form-control" name="image" value="Pick file" accept="image/*"/>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </div>
+</form>
 
 <ul class="navbar-nav flex-grow-1">
     <li class="nav-item">

@@ -39,6 +39,7 @@ namespace Forum_Dyskusyjne
             .AddDefaultUI();
 
             services.AddTransient<IEmailService, EmailService>();       // w³asny servis do wysy³ania mejli
+            services.AddTransient<IFileService, FileService>();         // w³asny servis do dodawania plików (awatarów)
 
             services.AddControllersWithViews();
             services.AddRazorPages();
