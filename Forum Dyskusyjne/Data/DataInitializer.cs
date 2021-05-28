@@ -121,19 +121,22 @@ namespace Forum_Dyskusyjne.Data
             if (context.PrivateMessages.Any()) { return; }
             var privateMessages = new PrivateMessage[]
             {
-                new PrivateMessage { Author = user1, Receiver = user2, Title = "Prwywatna wiadomość 1", Text = "Zawartość prywatnej wiadomości",
+                new PrivateMessage { Author = user1, Receiver = user2, Title = "Prwywatna wiadomość 1", Text = "Zawartość prywatnej wiadomości", 
+                    ReceiverVisible = true, 
                     Attachments = new List<Attachment>()
                     {
                         context.Attachments.Where(x => x.Id == 1).First(),
                         context.Attachments.Where(x => x.Id == 2).First()
                     }
                 },
-                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 2", Text = "Zawartość prywatnej wiadomości",
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 2", Text = "Zawartość prywatnej wiadomości", 
+                    ReceiverVisible = true,
                 Attachments = new List<Attachment>()
                     {
                         context.Attachments.Where(x => x.Id == 3).First()
                     }},
-                new PrivateMessage { Author = user1, Receiver = user2, Title = "Prwywatna wiadomość 3", Text = "Zawartość prywatnej wiadomości" },
+                new PrivateMessage { Author = user1, Receiver = user2, Title = "Prwywatna wiadomość 3", Text = "Zawartość prywatnej wiadomości",
+                    ReceiverVisible = true},
             };
             foreach (var privateMessage in privateMessages.Reverse())
             {

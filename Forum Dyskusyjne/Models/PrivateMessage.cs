@@ -13,6 +13,8 @@ namespace Forum_Dyskusyjne.Models
 
         public string Text { get; set; }
 
+        public bool ReceiverVisible { get; set; }
+
         public string AuthorId { get; set; }
 
         public User Author { get; set; }

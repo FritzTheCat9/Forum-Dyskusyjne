@@ -32,7 +32,8 @@ namespace Forum_Dyskusyjne.Controllers
             var privateMessages = _context.PrivateMessages
                 .Include(p => p.Author)
                 .Include(p => p.Receiver)
-                .Where(p => p.ReceiverId == user.Id);
+                .Where(p => p.ReceiverId == user.Id)
+                .Where(p => p.ReceiverVisible == true);
 
             return View(await privateMessages.ToListAsync());
         }
@@ -82,6 +83,7 @@ namespace Forum_Dyskusyjne.Controllers
                      .FirstOrDefault();
 
                 privateMessage.AuthorId = user.Id;              // autor = zalogowany user
+                privateMessage.ReceiverVisible = true;
 
                 _context.Add(privateMessage);
                 await _context.SaveChangesAsync();
@@ -119,7 +121,8 @@ namespace Forum_Dyskusyjne.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var privateMessage = await _context.PrivateMessages.FindAsync(id);
-            _context.PrivateMessages.Remove(privateMessage);
+            privateMessage.ReceiverVisible = false;                                     // ukrycie wiadomości
+            _context.PrivateMessages.Update(privateMessage);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

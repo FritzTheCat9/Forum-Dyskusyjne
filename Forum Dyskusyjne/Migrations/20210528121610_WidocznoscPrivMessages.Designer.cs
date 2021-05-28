@@ -4,14 +4,16 @@ using Forum_Dyskusyjne.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Forum_Dyskusyjne.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210528121610_WidocznoscPrivMessages")]
+    partial class WidocznoscPrivMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,6 +187,9 @@ namespace Forum_Dyskusyjne.Migrations
 
                     b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("AuthorVisible")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ReceiverId")
                         .HasColumnType("nvarchar(450)");
