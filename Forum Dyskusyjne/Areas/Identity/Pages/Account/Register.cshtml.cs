@@ -81,7 +81,7 @@ namespace Forum_Dyskusyjne.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 // Dodane pola do klasy User
-                var avatarPath = Directory.GetCurrentDirectory() + @"\Resources\Avatars\DefaultAvatar.png";
+                var avatarPath = "~/Resources/Avatars/DefaultAvatar.png";
                 var messagePaging = 10;
                 var messageNumber = 0;
                 var rank = _dbContext.Ranks.Where(x => x.Id == 1).FirstOrDefault();

@@ -1,9 +1,13 @@
-﻿
+﻿@model Forum_Dyskusyjne.Models.User
+
 @{
     ViewData["Title"] = "UserPanel";
 }
 
 <h1>UserPanel</h1>
+
+<h4>User avatar:</h4>
+<img src="@Url.Content(Model.AvatarPath)" width="200" height="200">
 
 <ul class="navbar-nav flex-grow-1">
     <li class="nav-item">

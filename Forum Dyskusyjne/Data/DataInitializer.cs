@@ -42,7 +42,7 @@ namespace Forum_Dyskusyjne.Data
                 user.UserName = "bartlomiejuminski1999@gmail.com";
                 user.Email = "bartlomiejuminski1999@gmail.com";
 
-                user.AvatarPath = Directory.GetCurrentDirectory() + @"\Resources\Avatars\DefaultAvatar.png";
+                user.AvatarPath = "~/Resources/Avatars/DefaultAvatar.png";
                 user.MessagePaging = 10;
                 user.MessageNumber = 0;
                 user.Rank = context.Ranks.Where(x => x.Id == 1).FirstOrDefault();
@@ -63,7 +63,7 @@ namespace Forum_Dyskusyjne.Data
                 user.UserName = "user@gmail.com";
                 user.Email = "user@gmail.com";
 
-                user.AvatarPath = Directory.GetCurrentDirectory() + @"\Resources\Avatars\DefaultAvatar.png";
+                user.AvatarPath = "~/Resources/Avatars/DefaultAvatar.png";
                 user.MessagePaging = 10;
                 user.MessageNumber = 0;
                 user.Rank = context.Ranks.Where(x => x.Id == 1).FirstOrDefault();
@@ -105,11 +105,11 @@ namespace Forum_Dyskusyjne.Data
             if (context.Attachments.Any()) { return; }
             var attachments = new Attachment[]
             {
-                new Attachment { Path = Directory.GetCurrentDirectory() + @"\Resources\Attachments\DefaultAttachment1.txt" },
-                new Attachment { Path = Directory.GetCurrentDirectory() + @"\Resources\Attachments\DefaultAttachment2.txt" },
-                new Attachment { Path = Directory.GetCurrentDirectory() + @"\Resources\Attachments\DefaultAttachment3.txt" },
-                new Attachment { Path = Directory.GetCurrentDirectory() + @"\Resources\Attachments\DefaultAttachment4.txt" },
-                new Attachment { Path = Directory.GetCurrentDirectory() + @"\Resources\Attachments\DefaultAttachment5.txt" }
+                new Attachment { Path = "~/Resources/Attachments/DefaultAttachment1.txt" },
+                new Attachment { Path = "~/Resources/Attachments/DefaultAttachment2.txt" },
+                new Attachment { Path = "~/Resources/Attachments/DefaultAttachment3.txt" },
+                new Attachment { Path = "~/Resources/Attachments/DefaultAttachment4.txt" },
+                new Attachment { Path = "~/Resources/Attachments/DefaultAttachment5.txt" }
             };
             foreach (var attachment in attachments.Reverse())
             {
