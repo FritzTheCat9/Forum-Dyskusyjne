@@ -47,6 +47,8 @@ namespace Forum_Dyskusyjne.Data
                 user.MessageNumber = 0;
                 user.Rank = context.Ranks.Where(x => x.Id == 1).FirstOrDefault();
 
+                user.EmailConfirmed = true;
+
                 IdentityResult result = userManager.CreateAsync(user, "Uminski123!").Result;
 
                 if (result.Succeeded)
@@ -65,6 +67,8 @@ namespace Forum_Dyskusyjne.Data
                 user.MessagePaging = 10;
                 user.MessageNumber = 0;
                 user.Rank = context.Ranks.Where(x => x.Id == 1).FirstOrDefault();
+
+                user.EmailConfirmed = true;
 
                 IdentityResult result = userManager.CreateAsync(user, "User123!").Result;
 

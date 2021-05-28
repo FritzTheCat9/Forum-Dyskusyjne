@@ -1,5 +1,6 @@
 using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
+using Forum_Dyskusyjne.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,6 +35,8 @@ namespace Forum_Dyskusyjne
             services.AddIdentity<User, IdentityRole>(options => { }).AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders()
             .AddDefaultUI();
+
+            services.AddTransient<IEmailService, EmailService>();       // w³asny servis do wysy³ania mejli
 
             services.AddControllersWithViews();
             services.AddRazorPages();
