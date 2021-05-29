@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.RegularExpressions;
 
 namespace Forum_Dyskusyjne
 {
@@ -141,6 +142,44 @@ namespace Forum_Dyskusyjne
             return false;
         }
 
+        public string DeleteBadTags(Message message)
+        {
+            var acceptedTags = _context.HtmlTags.ToList();
+
+            var tagList = new List<string>();
+            string pattern = @"(?<=</?)([^ >/]+)";
+            var matches = Regex.Matches(message.Text, pattern);
+
+            for (int i = 0; i < matches.Count; i++)
+            {
+                tagList.Add(matches[i].ToString());
+            }
+
+            bool isAccepted = false;
+            foreach (var tag in tagList)
+            {
+                isAccepted = false;
+                foreach (var acceptedTag in acceptedTags)
+                {
+                    if (tag == acceptedTag.Name) isAccepted = true;
+                }
+
+                if(!isAccepted)
+                {
+                    if (message.Text.Contains("<" + tag + ">"))
+                    {
+                        message.Text = message.Text.Replace("<" + tag + ">", "");
+                    }
+                    if (message.Text.Contains("</" + tag + ">"))
+                    {
+                        message.Text = message.Text.Replace("</" + tag + ">", "");
+                    }
+                }
+            }
+
+            return message.Text;
+        }
+
         public void AktualizujRange()
         {
             string LoggedUserEmail = User.Identity.Name;
@@ -249,6 +288,7 @@ namespace Forum_Dyskusyjne
                          .Where(x => x.Email == LoggedUserEmail)
                          .FirstOrDefault();
                     message.AuthorId = user.Id;
+                    message.Text = DeleteBadTags(message);
 
                     AktualizujRange();
                     _context.Add(message);
@@ -322,6 +362,7 @@ namespace Forum_Dyskusyjne
                 {
                     if (!ContainsForbiddenWords(messageToUpdate))
                     {
+                        messageToUpdate.Text = DeleteBadTags(messageToUpdate);
                         _context.Update(messageToUpdate);
                         await _context.SaveChangesAsync(); 
                         int threadId = messageToUpdate.Thread.Id;
