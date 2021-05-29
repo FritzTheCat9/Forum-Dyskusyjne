@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Forum_Dyskusyjne</title>
-    <link id="theme" rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link id="theme" rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" />
 
     <script type="text/javascript">
@@ -136,6 +136,8 @@
                 } else if (themeCookie == "SOLAR") {
                     themeTag.setAttribute('href', "/lib/bootstrap/dist/css/bootstrap-Solar.css")
                 }
+            } else {
+                themeTag.setAttribute('href', "/lib/bootstrap/dist/css/bootstrap.min.css")
             }
         }
 
