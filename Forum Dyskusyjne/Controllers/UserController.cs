@@ -1,6 +1,5 @@
 ﻿using Forum_Dyskusyjne.Data;
 using Forum_Dyskusyjne.Models;
-using Forum_Dyskusyjne.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

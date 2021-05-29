@@ -339,6 +339,16 @@ namespace Forum_Dyskusyjne.Data
                 new ForumUser { Forum = forums[1], User = userManager.FindByEmailAsync("bartlomiejuminski1999@gmail.com").Result }
             };
             context.ForumUsers.AddRange(forumUsers);
+
+            /* HtmlTags */
+            var tags = new HtmlTag[]
+            {
+                new HtmlTag { Name = "br" },
+                new HtmlTag { Name = "b" },
+                new HtmlTag { Name = "i" }
+            };
+            context.HtmlTags.AddRange(tags);
+            
             context.SaveChanges();
         }
     }

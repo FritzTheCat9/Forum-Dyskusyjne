@@ -29,6 +29,7 @@ namespace Forum_Dyskusyjne.Data
         public DbSet<Forum> Forums { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ForumUser> ForumUsers { get; set; }
+        public DbSet<HtmlTag> HtmlTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
