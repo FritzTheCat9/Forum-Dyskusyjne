@@ -198,6 +198,7 @@ namespace Forum_Dyskusyjne
             threadToUpdate.Text = thread.Text;
             threadToUpdate.Views = thread.Views;
             threadToUpdate.ForumId = thread.ForumId;
+            threadToUpdate.Forum = _context.Forums.Where(x => x.Id == thread.ForumId).FirstOrDefault();
 
             if (id != thread.Id)
             {

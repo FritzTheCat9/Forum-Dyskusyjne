@@ -16,7 +16,8 @@ namespace Forum_Dyskusyjne.Models
 
         [Required]
         public string Text { get; set; }
-
+        
+        [Required]
         public int ThreadId { get; set; }
 
         public Thread Thread { get; set; }

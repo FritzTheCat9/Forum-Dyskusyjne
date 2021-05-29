@@ -149,8 +149,23 @@ namespace Forum_Dyskusyjne
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var category = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+
+            bool canDelete = true;
+            var forums = await _context.Forums.Where(x => x.CategoryId == id).ToListAsync();           // mozna usunąć tylko gdy żadne forum nie jest tej kategorii
+            foreach (var forum in forums)
+            {
+                if(forum.CategoryId == id)
+                {
+                    canDelete = false;
+                }
+            }
+            
+            if (canDelete)
+            {
+                _context.Categories.Remove(category);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

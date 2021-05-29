@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,12 +12,15 @@ namespace Forum_Dyskusyjne.Models
 
         public bool Sticky { get; set; }
 
+        [Required]
         public string Title { get; set; }
 
+        [Required]
         public string Text { get; set; }
 
         public int Views { get; set; }
 
+        [Required]
         public int ForumId { get; set; }
 
         public Forum Forum { get; set; }

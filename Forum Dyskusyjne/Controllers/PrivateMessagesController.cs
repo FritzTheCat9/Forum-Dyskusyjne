@@ -53,7 +53,6 @@ namespace Forum_Dyskusyjne
         [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName");
             ViewData["ReceiverId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
@@ -64,15 +63,20 @@ namespace Forum_Dyskusyjne
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Create([Bind("Id,Title,Text,AuthorId,ReceiverId")] PrivateMessage privateMessage)
+        public async Task<IActionResult> Create([Bind("Id,Title,Text,ReceiverId")] PrivateMessage privateMessage)
         {
             if (ModelState.IsValid)
             {
+                string LoggedUserEmail = User.Identity.Name;
+                User user = _context.Users
+                     .Where(x => x.Email == LoggedUserEmail)
+                     .FirstOrDefault();
+                privateMessage.AuthorId = user.Id;
+
                 _context.Add(privateMessage);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.AuthorId);
             ViewData["ReceiverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.ReceiverId);
             return View(privateMessage);
         }
@@ -91,7 +95,6 @@ namespace Forum_Dyskusyjne
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.AuthorId);
             ViewData["ReceiverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.ReceiverId);
             return View(privateMessage);
         }
@@ -102,8 +105,11 @@ namespace Forum_Dyskusyjne
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text,AuthorId,ReceiverId")] PrivateMessage privateMessage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text,ReceiverId")] PrivateMessage privateMessage)
         {
+            var oldMessage = _context.PrivateMessages.Where(x => x.Id == id).AsNoTracking().FirstOrDefault();
+            privateMessage.AuthorId = oldMessage.AuthorId;
+
             if (id != privateMessage.Id)
             {
                 return NotFound();
@@ -129,7 +135,6 @@ namespace Forum_Dyskusyjne
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.AuthorId);
             ViewData["ReceiverId"] = new SelectList(_context.Users, "Id", "UserName", privateMessage.ReceiverId);
             return View(privateMessage);
         }

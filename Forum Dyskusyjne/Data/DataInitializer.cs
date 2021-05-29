@@ -42,7 +42,7 @@ namespace Forum_Dyskusyjne.Data
                 user.UserName = "bartlomiejuminski1999@gmail.com";
                 user.Email = "bartlomiejuminski1999@gmail.com";
 
-                user.AvatarPath = "Resources/Avatars/DefaultAvatar.png";
+                user.AvatarPath = "Resources/Avatars/jake.png";
                 user.MessagePaging = 10;
                 user.MessageNumber = 0;
                 user.Rank = context.Ranks.Where(x => x.Id == 1).FirstOrDefault();
@@ -63,8 +63,8 @@ namespace Forum_Dyskusyjne.Data
                 user.UserName = "user@gmail.com";
                 user.Email = "user@gmail.com";
 
-                user.AvatarPath = "Resources/Avatars/DefaultAvatar.png";
-                user.MessagePaging = 10;
+                user.AvatarPath = "Resources/Avatars/pepe.jpg";
+                user.MessagePaging = 5;
                 user.MessageNumber = 0;
                 user.Rank = context.Ranks.Where(x => x.Id == 1).FirstOrDefault();
 
@@ -135,7 +135,27 @@ namespace Forum_Dyskusyjne.Data
                     {
                         context.Attachments.Where(x => x.Id == 3).First()
                     }},
-                new PrivateMessage { Author = user1, Receiver = user2, Title = "Prwywatna wiadomość 3", Text = "Zawartość prywatnej wiadomości",
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 3", Text = "Zawartość prywatnej wiadomości",
+                    ReceiverVisible = true},
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 4", Text = "Zawartość prywatnej wiadomości",
+                    ReceiverVisible = true},
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 5", Text = "Zawartość prywatnej wiadomości SIEMA",
+                    ReceiverVisible = true},
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 6", Text = "Zawartość prywatnej wiadomości",
+                    ReceiverVisible = true},
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 7", Text = "Zawartość prywatnej wiadomości",
+                    ReceiverVisible = true},
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 8", Text = "Zawartość prywatnej wiadomości",
+                    ReceiverVisible = true},
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 9", Text = "Zawartość prywatnej wiadomości",
+                    ReceiverVisible = true},
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 10", Text = "Zawartość prywatnej wiadomości",
+                    ReceiverVisible = true},
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 11", Text = "Zawartość prywatnej wiadomości",
+                    ReceiverVisible = true},
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 12", Text = "Zawartość prywatnej wiadomości",
+                    ReceiverVisible = true},
+                new PrivateMessage { Author = user2, Receiver = user1, Title = "Prwywatna wiadomość 13", Text = "Zawartość prywatnej wiadomości",
                     ReceiverVisible = true},
             };
             foreach (var privateMessage in privateMessages.Reverse())
@@ -251,8 +271,16 @@ namespace Forum_Dyskusyjne.Data
                                         context.Attachments.Where(x => x.Id == 4).First()
                                     }
                                     },
-                                    new Message { Author = user2, Text = "Zawartość wiadomości", Visible = true, Reported = false },
-                
+                                    new Message { Author = user2, Text = "Zawartość wiadomości :)", Visible = true, Reported = false },
+                                    new Message { Author = user1, Text = "Zawartość wiadomości :)", Visible = true, Reported = false },
+                                    new Message { Author = user2, Text = "Zawartość wiadomości :)", Visible = true, Reported = false },
+                                    new Message { Author = user2, Text = "Zawartość wiadomości :)", Visible = true, Reported = false },
+                                    new Message { Author = user2, Text = "Zawartość wiadomości :)", Visible = true, Reported = false },
+                                    new Message { Author = user1, Text = "Zawartość wiadomości :)", Visible = true, Reported = false },
+                                    new Message { Author = user1, Text = "Zawartość wiadomości :)", Visible = true, Reported = false },
+                                    new Message { Author = user2, Text = "Zawartość wiadomości :)", Visible = true, Reported = false },
+                                    new Message { Author = user2, Text = "Zawartość wiadomości :)", Visible = true, Reported = false },
+                                    new Message { Author = user2, Text = "Zawartość wiadomości :)", Visible = true, Reported = false }
                              }
                          },
                         new Thread { Author = user2, Title = "Tytuł wątku 2", Text = "Zawartość wątku", Sticky = false, Views = 0,

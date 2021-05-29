@@ -149,8 +149,14 @@ namespace Forum_Dyskusyjne
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var rank = await _context.Ranks.FindAsync(id);
-            _context.Ranks.Remove(rank);
-            await _context.SaveChangesAsync();
+
+            var users = await _context.Users.Where(x => x.RankId ==id).ToListAsync();           // mozna usunąć tylko gdy nikt jej nie ma
+            if(users.Count == 0)
+            {
+                _context.Ranks.Remove(rank);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
