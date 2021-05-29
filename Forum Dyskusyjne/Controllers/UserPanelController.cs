@@ -77,5 +77,26 @@ namespace Forum_Dyskusyjne.Controllers
 
             return View(user);
         }
+        [HttpPost]
+        [Authorize(Roles = "Administrator,NormalUser")]
+        public IActionResult ChangeMessagePaging(int newMessagesPaging)
+        {
+            string LoggedUserEmail = User.Identity.Name;
+            User user = _context.Users
+                 .Where(x => x.Email == LoggedUserEmail)
+                 .FirstOrDefault();
+
+            if(ModelState.IsValid)
+            {
+                if(newMessagesPaging > 0 && newMessagesPaging <= 30)
+                {
+                    user.MessagePaging = newMessagesPaging;
+                    _context.Update(user);
+                    _context.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

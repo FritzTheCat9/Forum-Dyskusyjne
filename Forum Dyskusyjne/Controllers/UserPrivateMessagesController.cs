@@ -22,8 +22,21 @@ namespace Forum_Dyskusyjne.Controllers
 
         // GET: UserPrivateMessages
         [Authorize(Roles = "Administrator,NormalUser")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string currentFilter, string searchString, int? pageNumber)
         {
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
             string LoggedUserEmail = User.Identity.Name;
             User user = _context.Users
                 .Where(x => x.Email == LoggedUserEmail)
@@ -35,7 +48,13 @@ namespace Forum_Dyskusyjne.Controllers
                 .Where(p => p.ReceiverId == user.Id)
                 .Where(p => p.ReceiverVisible == true);
 
-            return View(await privateMessages.ToListAsync());
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                privateMessages = privateMessages.Where(p => p.Text.ToUpper().Contains(searchString.ToUpper()) || p.Title.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            int pageSize = user.MessagePaging;
+            return View(await PaginatedList<PrivateMessage>.CreateAsync(privateMessages.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: UserPrivateMessages/Details/5

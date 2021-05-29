@@ -24,6 +24,16 @@
     </div>
 </form>
 
+<h4>User messages paging (1 - 30):</h4>
+<form class="col-sm-4" method="post" asp-action="ChangeMessagePaging">
+    <div class="form-group">
+        <input type="number" class="form-control" name="newMessagesPaging"/>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Change</button>
+    </div>
+</form>
+
 <ul class="navbar-nav flex-grow-1">
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="" asp-controller="UserPrivateMessages" asp-action="Index">Private Messages</a>

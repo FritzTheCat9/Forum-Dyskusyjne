@@ -22,8 +22,21 @@ namespace Forum_Dyskusyjne
 
         //------------------------------------------------------------------------------
         // GET: Fora/ShowForaThreads/:id
-        public async Task<IActionResult> ShowThreadMessages(int id)
+        public async Task<IActionResult> ShowThreadMessages(int id, string currentFilter, string searchString, int? pageNumber)
         {
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
             var messages = _context.Messages.Include(m => m.Author).Include(m => m.Thread).Where(x => x.ThreadId == id);
 
             var thread = _context.Threads.FirstOrDefault(x => x.Id == id);          // zliczanie odsłon wątku
@@ -33,7 +46,20 @@ namespace Forum_Dyskusyjne
                 _context.SaveChanges();
             }
 
-            return View("Index", await messages.ToListAsync());
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                messages = messages.Where(p => p.Text.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            string LoggedUserEmail = User.Identity.Name;
+            User user = _context.Users
+                .Where(x => x.Email == LoggedUserEmail)
+                .FirstOrDefault();
+
+            int pageSize = 10;
+            if (user != null) pageSize = user.MessagePaging;
+
+            return View(await PaginatedList<Message>.CreateAsync(messages.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         /// <summary>
@@ -142,10 +168,40 @@ namespace Forum_Dyskusyjne
 
 
         // GET: Messages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string currentFilter, string searchString, int? pageNumber)
         {
-            var applicationDbContext = _context.Messages.Include(m => m.Author).Include(m => m.Thread);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var messages = _context.Messages.Include(m => m.Author).Include(m => m.Thread).Where(x => 1 == 1);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                messages = messages.Where(p => p.Text.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            string LoggedUserEmail = User.Identity.Name;
+            User user = _context.Users
+                .Where(x => x.Email == LoggedUserEmail)
+                .FirstOrDefault();
+
+            int pageSize = 10;
+            if (user != null) pageSize = user.MessagePaging;
+
+            return View(await PaginatedList<Message>.CreateAsync(messages.AsNoTracking(), pageNumber ?? 1, pageSize));
+
+
+           // return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Messages/Details/5
