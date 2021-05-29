@@ -4,8 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Forum_Dyskusyjne</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link id="theme" rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            checkCookie()
+        })
+    </script>
+
 </head>
 <body>
     <header>
@@ -48,11 +55,91 @@
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2021 - Forum_Dyskusyjne - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <button class="btn-sm btn btn-secondary" id="light">Light</button>
+            <button class="btn-sm btn btn-secondary" id="dark">Dark</button>
+            <button class="btn-sm btn btn-secondary" id="litera">Light 2</button>
+            <button class="btn-sm btn btn-secondary" id="solar">Solar</button>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script type="text/javascript">
+        const darkBtn = document.querySelector('#dark');
+        const lightBtn = document.querySelector('#light');
+        const literaBtn = document.querySelector('#litera');
+        const solarBtn = document.querySelector('#solar');
+
+        const themeTag = document.querySelector('#theme');
+
+        darkBtn.addEventListener('click', () => {
+            console.log(themeTag.getAttribute('href'))
+            setCookie("THEME", "DARK", 365);
+            themeTag.setAttribute('href', "/lib/bootstrap/dist/css/bootstrap-Darkly.css")
+            console.log("DARK")
+        });
+
+        lightBtn.addEventListener('click', () => {
+            console.log(themeTag.getAttribute('href'))
+            setCookie("THEME", "LIGHT", 365);
+            themeTag.setAttribute('href', "/lib/bootstrap/dist/css/bootstrap.min.css")
+            console.log("LIGHT")
+        });
+
+        literaBtn.addEventListener('click', () => {
+            console.log(themeTag.getAttribute('href'))
+            setCookie("THEME", "LIGHT 2", 365);
+            themeTag.setAttribute('href', "/lib/bootstrap/dist/css/bootstrap-Litera.css")
+            console.log("LITERA")
+        });
+
+        solarBtn.addEventListener('click', () => {
+            console.log(themeTag.getAttribute('href'))
+            setCookie("THEME", "SOLAR", 365);
+            themeTag.setAttribute('href', "/lib/bootstrap/dist/css/bootstrap-Solar.css")
+            console.log("SOLAR")
+        });
+
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function checkCookie() {
+            var themeCookie = getCookie("THEME");
+            if (themeCookie != "") {
+                if (themeCookie == "LIGHT") {
+                    themeTag.setAttribute('href', "/lib/bootstrap/dist/css/bootstrap.min.css")
+                } else if (themeCookie == "DARK") {
+                    themeTag.setAttribute('href', "/lib/bootstrap/dist/css/bootstrap-Darkly.css")
+                } else if (themeCookie == "LIGHT 2") {
+                    themeTag.setAttribute('href', "/lib/bootstrap/dist/css/bootstrap-Litera.css")
+                } else if (themeCookie == "SOLAR") {
+                    themeTag.setAttribute('href', "/lib/bootstrap/dist/css/bootstrap-Solar.css")
+                }
+            }
+        }
+
+        //this.checkCookie()
+    </script>
 </body>
 </html>
