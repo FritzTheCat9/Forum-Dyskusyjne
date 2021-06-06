@@ -37,6 +37,15 @@ namespace Forum_Dyskusyjne
             services.AddIdentity<User, IdentityRole>(options => { }).AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders()
             .AddDefaultUI();
+            //Autommatyczne wylogowywanie
+            services.Configure<SecurityStampValidatorOptions>(options => options.ValidationInterval = TimeSpan.FromSeconds(10));
+
+            services.AddAuthentication()
+                .Services.ConfigureApplicationCookie(options =>
+                {
+                    options.SlidingExpiration = true;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                });
 
             services.AddTransient<IEmailService, EmailService>();       // w³asny servis do wysy³ania mejli
             services.AddTransient<IFileService, FileService>();         // w³asny servis do dodawania plików (awatarów)
