@@ -19,5 +19,13 @@ namespace Forum_Dyskusyjne.Models
         public Rank Rank { get; set; }
 
         public ICollection<ForumUser> Forums { get; set; }
+
+        /*public ICollection<Announcement> Announcements { get; set; }
+
+        public ICollection<Thread> Threads { get; set; }
+
+        public ICollection<Message> Messages { get; set; }
+
+        public ICollection<PrivateMessage> PrivateMessages { get; set; }*/
     }
 }

@@ -15,5 +15,7 @@ namespace Forum_Dyskusyjne.Models
 
         [Required]
         public int MessagesNumber { get; set; }
+
+        // public ICollection<User> Users { get; set; }
     }
 }
